@@ -15,14 +15,23 @@ import java.util.Date;
 public class PortalCalendar {
     
     private Calendar cal;
+    private Calendar calManager;
+    private Date currentDate;
+    private Date currentWeekDate;
+    
     
     
     public PortalCalendar(){
         cal = Calendar.getInstance();
+        calManager = Calendar.getInstance();
     }
     
     private void init(){
         
+    }
+    
+    public Calendar getCalManager(){
+        return calManager;
     }
     
     public Date getCurrentDate(){
@@ -39,12 +48,30 @@ public class PortalCalendar {
     
     
     public void setCalendarWeek(Date dt ){
+        currentDate = dt;
         cal.setTime(dt);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getFirstDayOfWeek());
+        currentWeekDate = calculateWeekDate(dt);
+        //cal.set(Calendar.DAY_OF_MONTH, cal.getFirstDayOfWeek());
     }
+    
+    public Date getSelectedCurrentDate(){
+        return currentDate;
+    }
+    
+    public int getSelectedDayOfMonth(){
+        Calendar tempCal = getCalManager();
+        tempCal.setTime(getSelectedCurrentDate());
+        return tempCal.get(Calendar.DAY_OF_MONTH);
+    }
+    
+    
     
     public void setCalendarDate(){
         
+    }
+    
+    public Date getCurrentWeekDate(){
+        return currentWeekDate;
     }
     
     public int getDayOfMonth(Date aDate) {
@@ -59,13 +86,30 @@ public class PortalCalendar {
     }
     
     public void resetCalendar(){
-        cal.set(Calendar.DAY_OF_MONTH, cal.getFirstDayOfWeek());
+        cal.set(getSelectedDayOfMonth(), cal.getFirstDayOfWeek());
     }
     
-    public void setCalendar( int offset ){
+    public void setCalendarDate( int offset ){
         int correctOffset = offset+1;
         cal.add(Calendar.DATE, correctOffset);
         System.out.println(cal.getTime().toString());
+    }
+    
+    public void setCalendar(){
+        
+    }
+    
+    public Date calculateWeekDate( Date dt ){
+        Calendar tempCal = Calendar.getInstance();
+        tempCal.setTime(dt);
+        tempCal.set(Calendar.DAY_OF_WEEK, tempCal.getFirstDayOfWeek());
+        return tempCal.getTime();
+    }
+    
+    public int currentWeekDay( Date dt ){
+        Calendar tempCal = Calendar.getInstance();
+        tempCal.setTime(dt);
+        return tempCal.get(Calendar.DAY_OF_WEEK); 
     }
     
 }

@@ -38,3 +38,4 @@ dist
 *.bak
 csr.db
 /dist/
+/nbproject/

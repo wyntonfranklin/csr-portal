@@ -16,7 +16,7 @@ public class AppController {
 
     public static DefaultListModel getWeekDaysModel(){
         DefaultListModel model = new DefaultListModel();
-        String [] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+        String [] days = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
         for (String day: days) {           
             model.addElement(day);
         }

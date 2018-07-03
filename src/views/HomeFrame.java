@@ -43,6 +43,7 @@ public class HomeFrame extends javax.swing.JFrame {
     private void initFunctions(){
         pc = new PortalCalendar();
         pc.setCalendarWeek(Calendar.getInstance().getTime());
+        setSelectedDay();
         setWeekDays();
         loadVisitorsTable();
     }    
@@ -103,6 +104,14 @@ public class HomeFrame extends javax.swing.JFrame {
     public void saveVistor(){
         
     }
+    
+     public void setCalendarDate( int offset ){
+        int correctOffset =  offset;
+        Calendar tempCal =  Calendar.getInstance();
+        tempCal.setTime(pc.getCurrentWeekDate());
+        tempCal.add(Calendar.DATE, correctOffset);
+        System.out.println(tempCal.getTime().toString());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,6 +157,16 @@ public class HomeFrame extends javax.swing.JFrame {
         calendarView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 calendarViewMouseClicked(evt);
+            }
+        });
+        calendarView.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                calendarViewPropertyChange(evt);
+            }
+        });
+        calendarView.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                calendarViewVetoableChange(evt);
             }
         });
 
@@ -353,9 +372,8 @@ public class HomeFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
          if( evt.getClickCount() == 2 ){
             int currentDay = DaysList.getSelectedIndex();
-            pc.setCalendar(currentDay);
             System.out.println(DaysList.getSelectedIndex()); 
-            pc.resetCalendar();
+            setCalendarDate(currentDay);
          }
     }//GEN-LAST:event_DaysListMouseClicked
 
@@ -364,8 +382,23 @@ public class HomeFrame extends javax.swing.JFrame {
         if( evt.getClickCount() == 1){
             System.out.println("calendar clicked");
             pc.setCalendarWeek(calendarView.getDate());
+     
         }
     }//GEN-LAST:event_calendarViewMouseClicked
+
+    private void calendarViewPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarViewPropertyChange
+        // TODO add your handling code here:
+            //System.out.println("calendar clicked");
+            if( calendarView.getDate() != null ){
+                pc.setCalendarWeek(calendarView.getDate());   
+                System.out.println(pc.currentWeekDay(calendarView.getDate())-1);
+                DaysList.setSelectedIndex(pc.currentWeekDay(calendarView.getDate())-1);
+            }
+    }//GEN-LAST:event_calendarViewPropertyChange
+
+    private void calendarViewVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_calendarViewVetoableChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_calendarViewVetoableChange
 
     /**
      * @param args the command line arguments

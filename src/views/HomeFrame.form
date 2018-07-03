@@ -130,6 +130,8 @@
         <Component class="org.jdesktop.swingx.JXDatePicker" name="calendarView">
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="calendarViewMouseClicked"/>
+            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="calendarViewPropertyChange"/>
+            <EventHandler event="vetoableChange" listener="java.beans.VetoableChangeListener" parameters="java.beans.PropertyChangeEvent" handler="calendarViewVetoableChange"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
