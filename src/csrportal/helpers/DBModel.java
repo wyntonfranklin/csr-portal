@@ -1,7 +1,7 @@
-package helpers;
+package csrportal.helpers;
 
 
-import helpers.DB;
+import csrportal.helpers.DB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +48,10 @@ public abstract class DBModel {
         return new DB().queryAll(findAllQuery());
     }
     
+    public ResultSet getAllColumnsBySql( String query ){
+        return new DB().queryAll(findAllBySqlQuery(query));
+    }
+    
     public ResultSet getColumn( int id ){
        return new DB().queryAll(findByPkQuery(id));
     }
@@ -89,6 +93,12 @@ public abstract class DBModel {
     public String findAllQuery(){
         return qFindAll
                 .replace("{tablename}",getTableName());
+    }
+    
+    public String findAllBySqlQuery( String query ){
+        return qRaw
+                .replace("{tablename}",getTableName())
+                .replace("{condition}", query);
     }
     
     public String findByPkQuery( int key ){

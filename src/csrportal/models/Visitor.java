@@ -5,7 +5,7 @@
  */
 package csrportal.models;
 
-import helpers.DBModel;
+import csrportal.helpers.DBModel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -202,8 +202,19 @@ public class Visitor extends DBModel {
     
 
     @Override
-    public List<?> findAllBySql(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+    public List<Visitor> findAllBySql(String query) {
+        List<Visitor> allresults = new ArrayList<>();
+        rs = getAllColumnsBySql(query);
+        try{
+            while(rs.next()){
+                Visitor tstClass = new Visitor();
+                tstClass.setAttributes(rs);
+                allresults.add(tstClass);
+             }   
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return allresults;
     }
 
     @Override

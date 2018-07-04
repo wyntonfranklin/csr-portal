@@ -5,7 +5,7 @@
  */
 package csrportal;
 
-import views.HomeFrame;
+import csrportal.views.HomeFrame;
 
 /**
  *

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package views;
+package csrportal.views;
 
 import csrportal.AppController;
 import csrportal.PortalCalendar;
 import csrportal.models.Visitor;
-import helpers.TableWidget;
+import csrportal.helpers.TableWidget;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,8 +29,6 @@ public class HomeFrame extends javax.swing.JFrame {
      * 
      */
     
-    private String selectedDate = null;
-    private Date currentWeekDate = null;
     public PortalCalendar pc;
     
     
@@ -43,9 +41,8 @@ public class HomeFrame extends javax.swing.JFrame {
     private void initFunctions(){
         pc = new PortalCalendar();
         pc.setCalendarWeek(Calendar.getInstance().getTime());
-        setSelectedDay();
+        setSelectedDay(pc.getCurrentDate());
         setWeekDays();
-        loadVisitorsTable();
     }    
     
     public void setWeekDays(){
@@ -56,61 +53,74 @@ public class HomeFrame extends javax.swing.JFrame {
         pc.setCalendarWeek(dt);
     }
     
-    public void setCalendarDate(){
+    public void setSelectedDay(Date dt){
+        calendarView.setDate(dt);
+    }
+    
+    
+    public void setDateToday(){
         
     }
-    
-    public int getDayOfMonth(Date aDate) {
-        Calendar g_cal = Calendar.getInstance();
-        g_cal.setTime(aDate);
-        return g_cal.get(Calendar.DAY_OF_MONTH);
-    }
-    
-    public void setSelectedDay(){
-        calendarView.setDate(pc.getCurrentDate());
-    }
-    
-    public void updateCalendar(){
-        
-    }
-    
-    
-    public void setCurrentWeek( Date weekdate ){
-        currentWeekDate = weekdate;
-    }
-    
-    public Date getCurrentWeekDate(){
-        return currentWeekDate;
-    }
-    
     
     
     public void loadVisitorsTable(){
-        String [] vistorsColumns = {"id","Name","Reason","Date","To"};
+        String [] vistorsColumns = {"id","Time","Name","Reason","To"};
         TableWidget tb = new TableWidget(vistorsColumns);
-        List<Visitor> lv = new Visitor().findAll();
+        System.out.println(visitorsQuery());
+        List<Visitor> lv = new Visitor().findAllBySql(visitorsQuery());
         for( Visitor v : lv ){
-            Object[] obj = {v.currentPk(),v.getFullName(),v.getReason(),v.getVisitDate(),v.getAttendingPerson() };
+            Object[] obj = {v.currentPk(),"",v.getFullName(),v.getReason(),v.getAttendingPerson() };
             tb.addRow(obj);
         }
         jTable1.setModel(tb.getModel());
         jTable1.removeColumn(jTable1.getColumnModel().getColumn(0));
     }
     
+    public String visitorsQuery(){
+        String query = "visit_date LIKE \"%{calendar_date}%\"";
+        
+        return query
+                .replace("{calendar_date}", getDateField());
+    }
+    
+    public String getDateField(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(calendarView.getDate());
+        return strDate;
+    }
+    
     public void refreshTable(){
        loadVisitorsTable();
     }
     
-    public void saveVistor(){
-        
-    }
     
      public void setCalendarDate( int offset ){
-        int correctOffset =  offset;
         Calendar tempCal =  Calendar.getInstance();
         tempCal.setTime(pc.getCurrentWeekDate());
-        tempCal.add(Calendar.DATE, correctOffset);
-        System.out.println(tempCal.getTime().toString());
+        tempCal.add(Calendar.DATE, offset);
+        setSelectedDay(tempCal.getTime());
+    }
+     
+    public void calendarDateChanged(){
+        pc.setCalendarWeek(calendarView.getDate());   
+        DaysList.setSelectedIndex(pc.currentWeekDay(calendarView.getDate())-1);
+        this.refreshTable();
+    }
+    
+    public Visitor findVisitor(int Id ){
+        Visitor vs = new Visitor();
+        vs.findByPk(Id);
+        return vs;
+    }
+    
+    public void editVisitor(int Id ){
+        Visitor vs = findVisitor(Id);
+        System.out.println(vs.getFullName());
+        AddVisitor vePopup = new AddVisitor(this, true, vs);
+        vePopup.setLocationRelativeTo(null);
+        vePopup.setTitle("Visitor Details");
+        vePopup.loadVisitor();
+        vePopup.setVisible(true);
     }
 
     /**
@@ -341,7 +351,6 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        System.out.println("this button was pressed");
         AddVisitor visitorForm = new AddVisitor(this, true, new Visitor());
         visitorForm.setTitle("Add Visitor");
         visitorForm.setLocationRelativeTo(null);
@@ -357,22 +366,14 @@ public class HomeFrame extends javax.swing.JFrame {
         int index = jTable1.getSelectedRow();
         if( evt.getClickCount() == 2 ){
             int evtId = Integer.valueOf(jTable1.getModel().getValueAt(index, 0).toString());
-            Visitor vs = new Visitor();
-            vs.findByPk(evtId);
-            System.out.println(vs.getFullName());
-            AddVisitor vePopup = new AddVisitor(this, true, vs);
-            vePopup.setLocationRelativeTo(null);
-            vePopup.setTitle("Visitor Details");
-            vePopup.loadVisitor();
-            vePopup.setVisible(true);
+            this.editVisitor(evtId);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void DaysListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DaysListMouseClicked
         // TODO add your handling code here:
          if( evt.getClickCount() == 2 ){
-            int currentDay = DaysList.getSelectedIndex();
-            System.out.println(DaysList.getSelectedIndex()); 
+            int currentDay = DaysList.getSelectedIndex(); 
             setCalendarDate(currentDay);
          }
     }//GEN-LAST:event_DaysListMouseClicked
@@ -380,7 +381,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private void calendarViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calendarViewMouseClicked
         // TODO add your handling code here:
         if( evt.getClickCount() == 1){
-            System.out.println("calendar clicked");
             pc.setCalendarWeek(calendarView.getDate());
      
         }
@@ -390,9 +390,7 @@ public class HomeFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
             //System.out.println("calendar clicked");
             if( calendarView.getDate() != null ){
-                pc.setCalendarWeek(calendarView.getDate());   
-                System.out.println(pc.currentWeekDay(calendarView.getDate())-1);
-                DaysList.setSelectedIndex(pc.currentWeekDay(calendarView.getDate())-1);
+                calendarDateChanged();
             }
     }//GEN-LAST:event_calendarViewPropertyChange
 
