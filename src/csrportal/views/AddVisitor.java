@@ -27,6 +27,7 @@ public class AddVisitor extends javax.swing.JDialog {
      */
     
     
+    private static final String TIME_FORMAT = "hh:mm a";
     private Visitor currentVisitor;
     private HomeFrame app;
     
@@ -42,9 +43,10 @@ public class AddVisitor extends javax.swing.JDialog {
         currentVisitor = cvs;
         app = (HomeFrame)parent;
         setCalendarDate();
+        setSpinner();
     }
     
-    public void setCalendarDate()
+    private void setCalendarDate()
     {
         if(currentVisitor.isNewRecord()){
             Date currentDate = Calendar.getInstance().getTime();
@@ -62,8 +64,38 @@ public class AddVisitor extends javax.swing.JDialog {
         currentVisitor.setAddress(addressField.getText());
         currentVisitor.setMailingAddress(mailingAddressField.getText());
         currentVisitor.setPrimaryContact(contactField.getText());
+        currentVisitor.setVisitTime(getSpinnerValue());
         currentVisitor.save();
     }
+    
+    public String getSpinnerValue(){
+        Date dt = (Date)jSpinner1.getValue();
+        SimpleDateFormat format = new SimpleDateFormat(AddVisitor.TIME_FORMAT);
+        return format.format(dt);
+    }
+    
+    private void setSpinner(){
+        if(currentVisitor.isNewRecord()){
+            Date date = new Date();
+            SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+            jSpinner1.setModel(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,AddVisitor.TIME_FORMAT);
+            jSpinner1.setEditor(de);   
+        }else{
+            SimpleDateFormat format = new SimpleDateFormat(AddVisitor.TIME_FORMAT);
+            Date date = new Date();
+            try {
+                date = format.parse(currentVisitor.getVisitTime());
+            } catch (ParseException ex) {
+                Logger.getLogger(AddVisitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+            jSpinner1.setModel(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,AddVisitor.TIME_FORMAT);
+            jSpinner1.setEditor(de);   
+        }
+    }
+    
     
     public void loadVisitor(){
         fnField.setText(currentVisitor.getFirstName());
@@ -129,10 +161,7 @@ public class AddVisitor extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         visitDateField = new org.jdesktop.swingx.JXDatePicker();
         jLabel10 = new javax.swing.JLabel();
-        Date date = new Date();
-        SpinnerDateModel sm =
-        new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        jSpinner1 = new javax.swing.JSpinner(sm);
+        jSpinner1 = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         saveForm = new javax.swing.JButton();
 
@@ -163,9 +192,6 @@ public class AddVisitor extends javax.swing.JDialog {
         jLabel9.setText("Date");
 
         jLabel10.setText("Time");
-
-        JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,"HH:mm:ss");
-        jSpinner1.setEditor(de);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

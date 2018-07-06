@@ -69,7 +69,7 @@ public class HomeFrame extends javax.swing.JFrame {
         System.out.println(visitorsQuery());
         List<Visitor> lv = new Visitor().findAllBySql(visitorsQuery());
         for( Visitor v : lv ){
-            Object[] obj = {v.currentPk(),"",v.getFullName(),v.getReason(),v.getAttendingPerson() };
+            Object[] obj = {v.currentPk(),v.getVisitTime(),v.getFullName(),v.getReason(),v.getAttendingPerson() };
             tb.addRow(obj);
         }
         jTable1.setModel(tb.getModel());

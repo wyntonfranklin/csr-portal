@@ -274,9 +274,7 @@
             </Component>
             <Component class="javax.swing.JSpinner" name="jSpinner1">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(sm)"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Date date = new Date();&#xa;SpinnerDateModel sm =&#xa;new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,&quot;HH:mm:ss&quot;);&#xa;jSpinner1.setEditor(de);"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner()"/>
               </AuxValues>
             </Component>
           </SubComponents>
