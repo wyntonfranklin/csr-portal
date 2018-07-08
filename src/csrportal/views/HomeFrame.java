@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -28,6 +30,8 @@ public class HomeFrame extends javax.swing.JFrame {
      * Creates new form HomeFrame
      * 
      */
+    
+    private int currentTab = 0;
     
     public PortalCalendar pc;
     
@@ -41,9 +45,19 @@ public class HomeFrame extends javax.swing.JFrame {
     private void initFunctions(){
         pc = new PortalCalendar();
         pc.setCalendarWeek(Calendar.getInstance().getTime());
-        setSelectedDay(pc.getCurrentDate());
         setWeekDays();
+        setSelectedDay(pc.getCurrentDate());
+        addTabbedChangedListener();
     }    
+    
+    public void addTabbedChangedListener(){
+        jTabbedPane1.addChangeListener(new ChangeListener() {
+        public void stateChanged(ChangeEvent e) {
+                System.out.println("Tab: " + jTabbedPane1.getSelectedIndex());
+                currentTab = jTabbedPane1.getSelectedIndex();
+            }
+        });
+    }
     
     public void setWeekDays(){
         DaysList.setModel(AppController.getWeekDaysModel());
@@ -55,6 +69,12 @@ public class HomeFrame extends javax.swing.JFrame {
     
     public void setSelectedDay(Date dt){
         calendarView.setDate(dt);
+       // calendarDateChanged();
+    }
+    
+    public void setCalendarDate(Date dt){
+        calendarView.setDate(dt);
+        calendarDateChanged(); 
     }
     
     
@@ -72,13 +92,12 @@ public class HomeFrame extends javax.swing.JFrame {
             Object[] obj = {v.currentPk(),v.getVisitTime(),v.getFullName(),v.getReason(),v.getAttendingPerson() };
             tb.addRow(obj);
         }
-        jTable1.setModel(tb.getModel());
-        jTable1.removeColumn(jTable1.getColumnModel().getColumn(0));
+        visitorsTable.setModel(tb.getModel());
+        visitorsTable.removeColumn(visitorsTable.getColumnModel().getColumn(0));
     }
     
     public String visitorsQuery(){
         String query = "visit_date LIKE \"%{calendar_date}%\"";
-        
         return query
                 .replace("{calendar_date}", getDateField());
     }
@@ -90,7 +109,9 @@ public class HomeFrame extends javax.swing.JFrame {
     }
     
     public void refreshTable(){
-       loadVisitorsTable();
+        if( currentTab == 0 ){
+            loadVisitorsTable();   
+        }
     }
     
     
@@ -122,6 +143,25 @@ public class HomeFrame extends javax.swing.JFrame {
         vePopup.loadVisitor();
         vePopup.setVisible(true);
     }
+    
+    public void onAddButtonPressed(){
+        if( currentTab == 0 ){
+            openVisitorForm();
+        }
+    }
+    
+    public void openVisitorForm(){
+        AddVisitor visitorForm = new AddVisitor(this, true, new Visitor());
+        visitorForm.setTitle("Add Visitor");
+        visitorForm.setLocationRelativeTo(null);
+        visitorForm.setVisible(true);
+    }
+    
+    public void onTodayButtonPressed(){
+        if( currentTab == 0 ){
+            this.setCalendarDate(pc.getToday());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,12 +183,14 @@ public class HomeFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        todayButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        visitorsTable = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -195,7 +237,12 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jButton4.setText("Email");
 
-        jButton5.setText("Today");
+        todayButton.setText("Today");
+        todayButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todayButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -208,7 +255,7 @@ public class HomeFrame extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(todayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -223,7 +270,7 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(todayButton)
                 .addContainerGap(220, Short.MAX_VALUE))
         );
 
@@ -256,22 +303,37 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        visitorsTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                visitorsTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(visitorsTable);
+
+        jLabel2.setText("Search this Table:");
+
+        jTextField1.setText("jTextField1");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(6, 6, 6)
+                .addComponent(jTextField1))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Visitors", jPanel4);
@@ -351,24 +413,17 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        AddVisitor visitorForm = new AddVisitor(this, true, new Visitor());
-        visitorForm.setTitle("Add Visitor");
-        visitorForm.setLocationRelativeTo(null);
-        visitorForm.setVisible(true);
-        //Visitor vc = new Visitor();
-       // vc.setFirstName("Wynton");
-       // vc.setLastName("franklin");
-        //vc.save();
+        onAddButtonPressed();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void visitorsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorsTableMouseClicked
         // TODO add your handling code here:
-        int index = jTable1.getSelectedRow();
+        int index = visitorsTable.getSelectedRow();
         if( evt.getClickCount() == 2 ){
-            int evtId = Integer.valueOf(jTable1.getModel().getValueAt(index, 0).toString());
+            int evtId = Integer.valueOf(visitorsTable.getModel().getValueAt(index, 0).toString());
             this.editVisitor(evtId);
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_visitorsTableMouseClicked
 
     private void DaysListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DaysListMouseClicked
         // TODO add your handling code here:
@@ -397,6 +452,11 @@ public class HomeFrame extends javax.swing.JFrame {
     private void calendarViewVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_calendarViewVetoableChange
         // TODO add your handling code here:
     }//GEN-LAST:event_calendarViewVetoableChange
+
+    private void todayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todayButtonActionPerformed
+        // TODO add your handling code here:
+        this.onTodayButtonPressed();
+    }//GEN-LAST:event_todayButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -441,8 +501,8 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -455,6 +515,8 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton todayButton;
+    private javax.swing.JTable visitorsTable;
     // End of variables declaration//GEN-END:variables
 }

@@ -80,6 +80,13 @@ public class PortalCalendar {
         return g_cal.get(Calendar.DAY_OF_MONTH);
     }
     
+    public Date getToday(){
+        Calendar g_cal = Calendar.getInstance();
+        Date date = new Date();
+        g_cal.setTime(date);
+        return g_cal.getTime(); 
+    }
+    
     
     public void updateCalendar(){
         

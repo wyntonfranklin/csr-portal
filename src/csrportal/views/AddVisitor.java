@@ -85,9 +85,11 @@ public class AddVisitor extends javax.swing.JDialog {
             SimpleDateFormat format = new SimpleDateFormat(AddVisitor.TIME_FORMAT);
             Date date = new Date();
             try {
-                date = format.parse(currentVisitor.getVisitTime());
+                if(currentVisitor.getVisitTime() != null){
+                    date = format.parse(currentVisitor.getVisitTime());   
+                }
             } catch (ParseException ex) {
-                Logger.getLogger(AddVisitor.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(AddVisitor.class.getName()).log(Level.SEVERE, null, ex);
             }
             SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
             jSpinner1.setModel(sm);
@@ -162,7 +164,7 @@ public class AddVisitor extends javax.swing.JDialog {
         visitDateField = new org.jdesktop.swingx.JXDatePicker();
         jLabel10 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
+        closeButton = new javax.swing.JButton();
         saveForm = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -282,7 +284,12 @@ public class AddVisitor extends javax.swing.JDialog {
                 .addGap(26, 26, 26))
         );
 
-        jButton1.setText("Cancel");
+        closeButton.setText("Cancel");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
 
         saveForm.setText("Save");
         saveForm.addActionListener(new java.awt.event.ActionListener() {
@@ -298,7 +305,7 @@ public class AddVisitor extends javax.swing.JDialog {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(closeButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saveForm)
                 .addContainerGap())
@@ -310,7 +317,7 @@ public class AddVisitor extends javax.swing.JDialog {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(closeButton)
                     .addComponent(saveForm))
                 .addContainerGap())
         );
@@ -342,6 +349,11 @@ public class AddVisitor extends javax.swing.JDialog {
         app.refreshTable();
         
     }//GEN-LAST:event_saveFormActionPerformed
+
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_closeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -387,10 +399,10 @@ public class AddVisitor extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField addressField;
+    private javax.swing.JButton closeButton;
     private javax.swing.JTextField contactField;
     private javax.swing.JTextField emailField;
     private javax.swing.JTextField fnField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
