@@ -60,6 +60,10 @@ public abstract class DBModel {
         return new DB().queryAll(query);
     }
     
+    public ResultSet search(){
+        return new DB().queryAll("");
+    }
+    
     
     public String getTableName(){
         return tableName;

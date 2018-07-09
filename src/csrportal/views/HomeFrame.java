@@ -234,6 +234,11 @@ public class HomeFrame extends javax.swing.JFrame {
         openSearchForm();
     }
     
+    public void searchTable(){
+        Visitor vm = new Visitor();
+        vm.searchDb("hello");
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

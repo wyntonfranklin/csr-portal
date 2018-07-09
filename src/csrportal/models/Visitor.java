@@ -6,6 +6,7 @@
 package csrportal.models;
 
 import csrportal.helpers.DBModel;
+import csrportal.helpers.SearchQuery;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -266,6 +267,18 @@ public class Visitor extends DBModel {
     @Override
     public List<Object[]> getTableRows() {
         throw new UnsupportedOperationException("Not supported yet."); 
+    }
+    
+    public void searchDb( String value ){
+        SearchQuery sq = new SearchQuery();
+        sq.likeQuery("first_name", value, SearchQuery.OP_OR);
+        sq.likeQuery("last_name", value, SearchQuery.OP_OR);
+        sq.likeQuery("mailing_address", value, SearchQuery.OP_OR);
+        sq.likeQuery("attending_person", value, SearchQuery.OP_OR);
+        sq.likeQuery("email", value, SearchQuery.OP_OR);
+        sq.likeQuery("reason", value, SearchQuery.OP_OR);
+        sq.likeQuery("address", value, SearchQuery.OP_OR);
+        System.out.println(sq.getSearchQuery());
     }
     
 }
