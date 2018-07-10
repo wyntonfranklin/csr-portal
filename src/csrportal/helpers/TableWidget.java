@@ -30,7 +30,7 @@ public class TableWidget {
     }
     
    private void initTableModel(){
-        md = new DefaultTableModel( new Object [][] {}, colnames ) {
+        md = new DefaultTableModel( new Object [][] {}, getColumnNames() ) {
              @Override
                 public boolean isCellEditable(int row, int column) {
                     //all cells false
@@ -38,9 +38,17 @@ public class TableWidget {
                 }
         };
     }
+   
+    private String[] getColumnNames(){
+        return colnames;
+    }
     
     public DefaultTableModel getModel(){
         return md;
+    }
+    
+    public void clearRows(){
+       this.initTableModel();
     }
     
     public void setData(){

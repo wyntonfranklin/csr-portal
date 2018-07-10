@@ -269,7 +269,7 @@ public class Visitor extends DBModel {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
     
-    public void searchDb( String value ){
+    public String searchDb( String value ){
         SearchQuery sq = new SearchQuery();
         sq.likeQuery("first_name", value, SearchQuery.OP_OR);
         sq.likeQuery("last_name", value, SearchQuery.OP_OR);
@@ -279,6 +279,7 @@ public class Visitor extends DBModel {
         sq.likeQuery("reason", value, SearchQuery.OP_OR);
         sq.likeQuery("address", value, SearchQuery.OP_OR);
         System.out.println(sq.getSearchQuery());
+        return sq.getSearchQuery();
     }
     
 }

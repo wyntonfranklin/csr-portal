@@ -64,11 +64,7 @@ public class PortalCalendar {
         return tempCal.get(Calendar.DAY_OF_MONTH);
     }
     
-    
-    
-    public void setCalendarDate(){
-        
-    }
+  
     
     public Date getCurrentWeekDate(){
         return currentWeekDate;
@@ -87,10 +83,7 @@ public class PortalCalendar {
         return g_cal.getTime(); 
     }
     
-    
-    public void updateCalendar(){
-        
-    }
+  
     
     public void resetCalendar(){
         cal.set(getSelectedDayOfMonth(), cal.getFirstDayOfWeek());
@@ -102,10 +95,7 @@ public class PortalCalendar {
         System.out.println(cal.getTime().toString());
     }
     
-    public void setCalendar(){
-        
-    }
-    
+
     public Date calculateWeekDate( Date dt ){
         Calendar tempCal = Calendar.getInstance();
         tempCal.setTime(dt);

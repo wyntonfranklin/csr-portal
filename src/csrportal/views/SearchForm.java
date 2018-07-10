@@ -30,7 +30,7 @@ public class SearchForm extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchInput = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
         cancelSearchButton = new javax.swing.JButton();
 
@@ -66,7 +66,7 @@ public class SearchForm extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -74,7 +74,7 @@ public class SearchForm extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -106,7 +106,7 @@ public class SearchForm extends javax.swing.JDialog {
         // TODO add your handling code here:
         //this.getParent()
         HomeFrame fm = (HomeFrame)(this.getParent());
-        fm.searchTable();
+        fm.controller.searchTable(searchInput.getText());
     }//GEN-LAST:event_searchButtonActionPerformed
 
     /**
@@ -155,7 +155,7 @@ public class SearchForm extends javax.swing.JDialog {
     private javax.swing.JButton cancelSearchButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton searchButton;
+    private javax.swing.JTextField searchInput;
     // End of variables declaration//GEN-END:variables
 }

@@ -39,9 +39,12 @@ public class HomeFrame extends javax.swing.JFrame {
     
     private TableRowSorter<TableModel> rowSorter;
     
+    public AppController controller;
+    
     
     public HomeFrame() {
         initComponents();
+        controller = new AppController(this);
         initFunctions();
     }
  
@@ -52,9 +55,8 @@ public class HomeFrame extends javax.swing.JFrame {
         setWeekDays();
         setSelectedDay(pc.getCurrentDate());
         addTabbedChangedListener();
-      //  setTableFilter();
-       // setSearchInputListener();
-    }    
+    }
+
     
     public void addTabbedChangedListener(){
         jTabbedPane1.addChangeListener(new ChangeListener() {
@@ -76,7 +78,6 @@ public class HomeFrame extends javax.swing.JFrame {
     
     public void setSelectedDay(Date dt){
         calendarView.setDate(dt);
-       // calendarDateChanged();
     }
     
     public void setCalendarDate(Date dt){
@@ -84,10 +85,6 @@ public class HomeFrame extends javax.swing.JFrame {
         calendarDateChanged(); 
     }
     
-    
-    public void setDateToday(){
-        
-    }
     
     public void setTableFilter(){
         if( currentTab == 0 ){
@@ -130,25 +127,6 @@ public class HomeFrame extends javax.swing.JFrame {
     }
     
     
-    public void loadVisitorsTable(){
-        String [] vistorsColumns = {"id","Time","Name","Reason","To"};
-        TableWidget tb = new TableWidget(vistorsColumns);
-        System.out.println(visitorsQuery());
-        List<Visitor> lv = new Visitor().findAllBySql(visitorsQuery());
-        for( Visitor v : lv ){
-            Object[] obj = {v.currentPk(),v.getVisitTime(),v.getFullName(),v.getReason(),v.getAttendingPerson() };
-            tb.addRow(obj);
-        }
-        visitorsTable.setModel(tb.getModel());
-        visitorsTable.removeColumn(visitorsTable.getColumnModel().getColumn(0));
-    }
-    
-    public String visitorsQuery(){
-        String query = "visit_date LIKE \"%{calendar_date}%\"";
-        return query
-                .replace("{calendar_date}", getDateField());
-    }
-    
     public String getDateField(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(calendarView.getDate());
@@ -157,7 +135,7 @@ public class HomeFrame extends javax.swing.JFrame {
     
     public void refreshTable(){
         if( currentTab == 0 ){
-            loadVisitorsTable();   
+            controller.loadVisitorsTable();   
         }
     }
     
@@ -175,21 +153,6 @@ public class HomeFrame extends javax.swing.JFrame {
         this.refreshTable();
     }
     
-    public Visitor findVisitor(int Id ){
-        Visitor vs = new Visitor();
-        vs.findByPk(Id);
-        return vs;
-    }
-    
-    public void editVisitor(int Id ){
-        Visitor vs = findVisitor(Id);
-        System.out.println(vs.getFullName());
-        AddVisitor vePopup = new AddVisitor(this, true, vs);
-        vePopup.setLocationRelativeTo(null);
-        vePopup.setTitle("Visitor Details");
-        vePopup.loadVisitor();
-        vePopup.setVisible(true);
-    }
     
     public void onAddButtonPressed(){
         if( currentTab == 0 ){
@@ -234,10 +197,6 @@ public class HomeFrame extends javax.swing.JFrame {
         openSearchForm();
     }
     
-    public void searchTable(){
-        Visitor vm = new Visitor();
-        vm.searchDb("hello");
-    }
     
 
     /**
@@ -460,7 +419,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,7 +472,7 @@ public class HomeFrame extends javax.swing.JFrame {
         int index = visitorsTable.getSelectedRow();
         if( evt.getClickCount() == 2 ){
             int evtId = Integer.valueOf(visitorsTable.getModel().getValueAt(index, 0).toString());
-            this.editVisitor(evtId);
+            this.controller.editVisitor(evtId);
         }
     }//GEN-LAST:event_visitorsTableMouseClicked
 
@@ -620,6 +579,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JTextField searchField;
     private javax.swing.JButton sendEmailButton;
     private javax.swing.JButton todayButton;
-    private javax.swing.JTable visitorsTable;
+    public javax.swing.JTable visitorsTable;
     // End of variables declaration//GEN-END:variables
 }
