@@ -8,8 +8,11 @@ package csrportal;
 import csrportal.helpers.Mailer;
 import csrportal.helpers.TableWidget;
 import csrportal.models.Visitor;
-import csrportal.views.AddVisitor;
+import csrportal.views.VisitorForm;
 import csrportal.views.HomeFrame;
+import csrportal.views.MessageForm;
+import csrportal.views.SearchForm;
+import csrportal.views.SendEmail;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -88,7 +91,7 @@ public class AppController {
     public void editVisitor(int Id ){
         Visitor vs = findVisitor(Id);
         System.out.println(vs.getFullName());
-        AddVisitor vePopup = new AddVisitor(getFrame(), true, vs);
+        VisitorForm vePopup = new VisitorForm(getFrame(), true, vs);
         vePopup.setLocationRelativeTo(null);
         vePopup.setTitle("Visitor Details");
         vePopup.loadVisitor();
@@ -101,6 +104,34 @@ public class AppController {
         mail.setSubject(subject);
         mail.setRecipient(to);
         mail.start();
+    }
+    
+    public void openVisitorForm(){
+        VisitorForm visitorForm = new VisitorForm(getFrame(), true, new Visitor());
+        visitorForm.setTitle("Add Visitor");
+        visitorForm.setLocationRelativeTo(null);
+        visitorForm.setVisible(true);
+    }
+    
+    public void openSendEmail(){
+        SendEmail emailForm = new SendEmail(getFrame(),true);
+        emailForm.setTitle("Send Email");
+        emailForm.setLocationRelativeTo(null);
+        emailForm.setVisible(true);
+    }
+    
+    public void openMessageForm(){
+        MessageForm mf = new MessageForm(getFrame(),true);
+        mf.setLocationRelativeTo(null);
+        mf.setVisible(true);
+    }
+    
+    
+    public void openSearchForm(){
+        SearchForm fm = new SearchForm(getFrame(),true);
+        fm.setTitle("Search Current Table");
+        fm.setLocationRelativeTo(null);
+        fm.setVisible(true);
     }
     
     

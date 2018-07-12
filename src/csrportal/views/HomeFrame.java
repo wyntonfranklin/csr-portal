@@ -156,30 +156,12 @@ public class HomeFrame extends javax.swing.JFrame {
     
     public void onAddButtonPressed(){
         if( currentTab == 0 ){
-            openVisitorForm();
-        }
+            controller.openVisitorForm();
+        }else if( currentTab == 1 ){
+            controller.openMessageForm();
+        } 
     }
     
-    public void openVisitorForm(){
-        AddVisitor visitorForm = new AddVisitor(this, true, new Visitor());
-        visitorForm.setTitle("Add Visitor");
-        visitorForm.setLocationRelativeTo(null);
-        visitorForm.setVisible(true);
-    }
-    
-    public void openSendEmail(){
-        SendEmail emailForm = new SendEmail(this,true);
-        emailForm.setTitle("Send Email");
-        emailForm.setLocationRelativeTo(null);
-        emailForm.setVisible(true);
-    }
-    
-    public void openSearchForm(){
-        SearchForm fm = new SearchForm(this,true);
-        fm.setTitle("Search Current Table");
-        fm.setLocationRelativeTo(null);
-        fm.setVisible(true);
-    }
     
     public void onTodayButtonPressed(){
         if( currentTab == 0 ){
@@ -189,12 +171,12 @@ public class HomeFrame extends javax.swing.JFrame {
     
     public void onSendEmailButtonPressed(){
         if( currentTab == 0 ){
-            openSendEmail();
+            controller.openSendEmail();
         }
     }
     
     public void onSearchButtonPressend(){
-        openSearchForm();
+        controller.openSearchForm();
     }
     
     

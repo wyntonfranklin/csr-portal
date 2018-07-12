@@ -20,10 +20,10 @@ import javax.swing.SpinnerDateModel;
  *
  * @author shady
  */
-public class AddVisitor extends javax.swing.JDialog {
+public class VisitorForm extends javax.swing.JDialog {
 
     /**
-     * Creates new form AddVisitor
+     * Creates new form VisitorForm
      */
     
     
@@ -32,12 +32,12 @@ public class AddVisitor extends javax.swing.JDialog {
     private HomeFrame app;
     
       
-    public AddVisitor(java.awt.Frame parent, boolean modal) {
+    public VisitorForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public AddVisitor(java.awt.Frame parent, boolean modal, Visitor cvs) {
+    public VisitorForm(java.awt.Frame parent, boolean modal, Visitor cvs) {
         super(parent, modal);
         initComponents();
         currentVisitor = cvs;
@@ -70,7 +70,7 @@ public class AddVisitor extends javax.swing.JDialog {
     
     public String getSpinnerValue(){
         Date dt = (Date)jSpinner1.getValue();
-        SimpleDateFormat format = new SimpleDateFormat(AddVisitor.TIME_FORMAT);
+        SimpleDateFormat format = new SimpleDateFormat(VisitorForm.TIME_FORMAT);
         return format.format(dt);
     }
     
@@ -79,21 +79,21 @@ public class AddVisitor extends javax.swing.JDialog {
             Date date = new Date();
             SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
             jSpinner1.setModel(sm);
-            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,AddVisitor.TIME_FORMAT);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,VisitorForm.TIME_FORMAT);
             jSpinner1.setEditor(de);   
         }else{
-            SimpleDateFormat format = new SimpleDateFormat(AddVisitor.TIME_FORMAT);
+            SimpleDateFormat format = new SimpleDateFormat(VisitorForm.TIME_FORMAT);
             Date date = new Date();
             try {
                 if(currentVisitor.getVisitTime() != null){
                     date = format.parse(currentVisitor.getVisitTime());   
                 }
             } catch (ParseException ex) {
-                //Logger.getLogger(AddVisitor.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(VisitorForm.class.getName()).log(Level.SEVERE, null, ex);
             }
             SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
             jSpinner1.setModel(sm);
-            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,AddVisitor.TIME_FORMAT);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,VisitorForm.TIME_FORMAT);
             jSpinner1.setEditor(de);   
         }
     }
@@ -372,20 +372,21 @@ public class AddVisitor extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddVisitor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddVisitor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddVisitor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddVisitor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VisitorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AddVisitor dialog = new AddVisitor(new javax.swing.JFrame(), true);
+                VisitorForm dialog = new VisitorForm(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
