@@ -5,6 +5,7 @@
  */
 package csrportal;
 
+import csrportal.helpers.Mailer;
 import csrportal.helpers.TableWidget;
 import csrportal.models.Visitor;
 import csrportal.views.AddVisitor;
@@ -92,6 +93,14 @@ public class AppController {
         vePopup.setTitle("Visitor Details");
         vePopup.loadVisitor();
         vePopup.setVisible(true);
+    }
+    
+    public void sendMail(String[] to, String subject, String body){
+        Mailer mail = new Mailer();
+        mail.setMessage(body);
+        mail.setSubject(subject);
+        mail.setRecipient(to);
+        mail.start();
     }
     
     
