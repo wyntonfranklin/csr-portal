@@ -9,6 +9,7 @@ import csrportal.helpers.DBModel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,9 +114,21 @@ public class Message extends DBModel {
     }
 
     @Override
-    public List<?> findAllBySql(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Message> findAllBySql(String query) {
+        List<Message> allresults = new ArrayList<>();
+        rs = getAllColumnsBySql(query);
+        try{
+            while(rs.next()){
+                Message tstClass = new Message();
+                tstClass.setAttributes(rs);
+                allresults.add(tstClass);
+             }   
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return allresults;
     }
+    
 
     @Override
     public void findByPk(int id) {

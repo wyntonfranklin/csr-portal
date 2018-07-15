@@ -5,6 +5,15 @@
  */
 package csrportal.views;
 
+import csrportal.models.Message;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+
 /**
  *
  * @author shady
@@ -14,9 +23,83 @@ public class MessageForm extends javax.swing.JDialog {
     /**
      * Creates new form MessageForm
      */
+    
+    private Message msg;
+    private static final String TIME_FORMAT = "hh:mm a";
+    
+    
     public MessageForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    
+    public void setMessage(Message message){
+        msg = message;
+    }
+    
+    public void loadMessage(Message message){
+        msg = message;
+        this.setFormValues();
+    }
+    
+    public void setFormValues(){
+        if( msg != null ){
+            messageField.setText(msg.getMessageNote());
+            forField.setText(msg.getMessageFor());
+            this.setDate(msg.getMessageDate());
+            this.setTime();
+        }
+    }
+    
+    public String getDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(messageDateField.getDate());
+        return strDate;
+    }
+    
+    public String getTime(){
+        Date dt = (Date)jSpinner1.getValue();
+        SimpleDateFormat format = new SimpleDateFormat(MessageForm.TIME_FORMAT);
+        return format.format(dt);
+    }
+    
+    public void setDate( String date ){
+        if(date == null ){
+            date = Calendar.getInstance().getTime().toString();
+        }
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date strDate=null;
+        try {
+            strDate = dateFormat.parse(date);
+        } catch (ParseException ex) {
+           strDate = Calendar.getInstance().getTime();
+        }
+        messageDateField.setDate(strDate);
+    }
+    
+    public void setTime(){
+        if(msg.isNewRecord()){
+            Date date = new Date();
+            SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+            jSpinner1.setModel(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,this.TIME_FORMAT);
+            jSpinner1.setEditor(de);   
+        }else{
+            SimpleDateFormat format = new SimpleDateFormat(this.TIME_FORMAT);
+            Date date = new Date();
+            try {
+                if(msg.getMessageTime() != null){
+                    date = format.parse(msg.getMessageTime());   
+                }
+            } catch (ParseException ex) {
+                //Logger.getLogger(VisitorForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+            jSpinner1.setModel(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,this.TIME_FORMAT);
+            jSpinner1.setEditor(de);   
+        }
     }
 
     /**
@@ -31,13 +114,13 @@ public class MessageForm extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        forField = new javax.swing.JTextField();
+        messageDateField = new org.jdesktop.swingx.JXDatePicker();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jSpinner1 = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        messageField = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -47,13 +130,9 @@ public class MessageForm extends javax.swing.JDialog {
 
         jLabel1.setText("Date");
 
-        jLabel2.setText("To");
-
-        jTextField1.setText("jTextField1");
+        jLabel2.setText("For");
 
         jLabel3.setText("Time");
-
-        jTextField2.setText("jTextField2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -65,15 +144,15 @@ public class MessageForm extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(messageDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1)))
+                        .addComponent(forField)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -82,21 +161,21 @@ public class MessageForm extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(messageDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(forField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Message Details"));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        messageField.setColumns(20);
+        messageField.setRows(5);
+        jScrollPane1.setViewportView(messageField);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -115,9 +194,9 @@ public class MessageForm extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Save");
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Cancel");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,6 +274,7 @@ public class MessageForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField forField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -203,9 +283,8 @@ public class MessageForm extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
+    private javax.swing.JSpinner jSpinner1;
+    private org.jdesktop.swingx.JXDatePicker messageDateField;
+    private javax.swing.JTextArea messageField;
     // End of variables declaration//GEN-END:variables
 }

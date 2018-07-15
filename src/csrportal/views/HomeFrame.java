@@ -63,10 +63,13 @@ public class HomeFrame extends javax.swing.JFrame {
         public void stateChanged(ChangeEvent e) {
                 System.out.println("Tab: " + jTabbedPane1.getSelectedIndex());
                 currentTab = jTabbedPane1.getSelectedIndex();
-                setTableFilter();
+               // setTableFilter();
+                refreshTable();
+                
             }
         });
     }
+    
     
     public void setWeekDays(){
         DaysList.setModel(AppController.getWeekDaysModel());
@@ -134,8 +137,17 @@ public class HomeFrame extends javax.swing.JFrame {
     }
     
     public void refreshTable(){
-        if( currentTab == 0 ){
-            controller.loadVisitorsTable();   
+        switch (currentTab) {
+            case 0:
+                controller.loadVisitorsTable();
+                break;
+            case 1:
+                controller.loadMessageTable();
+                break;
+            case 2:
+                break;
+            default:
+                break;
         }
     }
     
@@ -211,6 +223,8 @@ public class HomeFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         searchField = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        messageTable = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -371,15 +385,17 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Visitors", jPanel4);
 
+        jScrollPane3.setViewportView(messageTable);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 479, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 441, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Messages", jPanel5);
@@ -556,7 +572,9 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JTable messageTable;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JButton sendEmailButton;

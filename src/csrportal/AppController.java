@@ -7,6 +7,7 @@ package csrportal;
 
 import csrportal.helpers.Mailer;
 import csrportal.helpers.TableWidget;
+import csrportal.models.Message;
 import csrportal.models.Visitor;
 import csrportal.views.VisitorForm;
 import csrportal.views.HomeFrame;
@@ -50,8 +51,8 @@ public class AppController {
     public void loadVisitorsTable(){
         String [] vistorsColumns = {"id","Time","Name","Reason","To"};
         TableWidget tb = new TableWidget(vistorsColumns);
-        System.out.println(visitorsQuery());
-        List<Visitor> lv = new Visitor().findAllBySql(visitorsQuery());
+        System.out.println(calendarQuery("visit_date"));
+        List<Visitor> lv = new Visitor().findAllBySql(calendarQuery("visit_date"));
         for( Visitor v : lv ){
             Object[] obj = {v.currentPk(),v.getVisitTime(),v.getFullName(),v.getReason(),v.getAttendingPerson() };
            tb.addRow(obj);
@@ -60,8 +61,8 @@ public class AppController {
         getFrame().visitorsTable.removeColumn(getFrame().visitorsTable.getColumnModel().getColumn(0));
     }
     
-    public String visitorsQuery(){
-        String query = "visit_date LIKE \"%{calendar_date}%\"";
+    public String calendarQuery( String attr ){
+        String query = attr + " LIKE \"%{calendar_date}%\"";
         return query
                 .replace("{calendar_date}", getFrame().getDateField());
     }
@@ -80,6 +81,23 @@ public class AppController {
         }
         getFrame().visitorsTable.setModel(tb.getModel());
         getFrame().visitorsTable.removeColumn(getFrame().visitorsTable.getColumnModel().getColumn(0));
+    }
+    
+    public void loadMessageTable(){
+        String [] vistorsColumns = {"id","Time","For","Exceprt"};
+        TableWidget tb = new TableWidget(vistorsColumns);
+        System.out.println(calendarQuery("message_date"));
+        List<Message> msg = new Message().findAllBySql(calendarQuery("message_date"));
+        for( Message m : msg ){
+            Object[] obj = { 
+                m.currentPk(),
+                m.getMessageTime(),
+                m.getMessageFor(),
+                m.getMessageNote()};
+           tb.addRow(obj);
+        }
+        getFrame().messageTable.setModel(tb.getModel());
+        getFrame().messageTable.removeColumn(getFrame().messageTable.getColumnModel().getColumn(0));
     }
     
     public Visitor findVisitor(int Id ){
@@ -122,6 +140,8 @@ public class AppController {
     
     public void openMessageForm(){
         MessageForm mf = new MessageForm(getFrame(),true);
+        mf.loadMessage(new Message());
+        mf.setTitle("New Message");
         mf.setLocationRelativeTo(null);
         mf.setVisible(true);
     }
