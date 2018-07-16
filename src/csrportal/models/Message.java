@@ -6,6 +6,7 @@
 package csrportal.models;
 
 import csrportal.helpers.DBModel;
+import csrportal.helpers.SearchQuery;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -132,7 +133,14 @@ public class Message extends DBModel {
 
     @Override
     public void findByPk(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     rs = getColumn(id);
+         try{
+            while(rs.next()){
+                setAttributes(rs);
+             }   
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        } 
     }
 
     @Override
@@ -163,6 +171,14 @@ public class Message extends DBModel {
     @Override
     public List<Object[]> getTableRows() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public String searchDb( String value ){
+        SearchQuery sq = new SearchQuery();
+        sq.likeQuery("message_for", value, SearchQuery.OP_OR);
+        sq.likeQuery("note", value, SearchQuery.OP_OR);
+        System.out.println(sq.getSearchQuery());
+        return sq.getSearchQuery();
     }
     
 }

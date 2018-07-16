@@ -56,6 +56,10 @@ public class HomeFrame extends javax.swing.JFrame {
         setSelectedDay(pc.getCurrentDate());
         addTabbedChangedListener();
     }
+    
+    public int getCurrentTab(){
+        return this.currentTab;
+    }
 
     
     public void addTabbedChangedListener(){
@@ -176,9 +180,8 @@ public class HomeFrame extends javax.swing.JFrame {
     
     
     public void onTodayButtonPressed(){
-        if( currentTab == 0 ){
-            this.setCalendarDate(pc.getToday());
-        }
+        this.setCalendarDate(pc.getToday());
+        this.refreshTable();
     }
     
     public void onSendEmailButtonPressed(){
@@ -385,6 +388,11 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Visitors", jPanel4);
 
+        messageTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                messageTableMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(messageTable);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -516,6 +524,15 @@ public class HomeFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         onSearchButtonPressend();
     }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void messageTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_messageTableMouseClicked
+        // TODO add your handling code here:
+        int index = messageTable.getSelectedRow();
+        if( evt.getClickCount() == 2 ){
+            int msgId = Integer.valueOf(messageTable.getModel().getValueAt(index, 0).toString());
+            this.controller.editMessage(msgId);
+        }
+    }//GEN-LAST:event_messageTableMouseClicked
 
     /**
      * @param args the command line arguments

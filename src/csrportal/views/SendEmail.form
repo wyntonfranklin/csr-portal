@@ -63,9 +63,9 @@
                               <Component id="toField" min="-2" pref="420" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <Component id="subjectLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="ccField" max="32767" attributes="0"/>
+                              <Component id="subjectField" max="32767" attributes="0"/>
                           </Group>
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
@@ -85,8 +85,8 @@
                   </Group>
                   <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="ccField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="subjectLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="subjectField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -110,12 +110,12 @@
         </Component>
         <Component class="javax.swing.JTextField" name="toField">
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="subjectLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="CC"/>
+            <Property name="text" type="java.lang.String" value="Subject"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="ccField">
+        <Component class="javax.swing.JTextField" name="subjectField">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>

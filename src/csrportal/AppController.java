@@ -67,8 +67,7 @@ public class AppController {
                 .replace("{calendar_date}", getFrame().getDateField());
     }
     
-    
-    public void searchTable( String keyword ){
+    public void searchVisitorTable( String keyword ){
         getFrame().DaysList.clearSelection();
         String [] vistorsColumns = {"id","Date","Name","Reason","To"};
         TableWidget tb = new TableWidget(vistorsColumns);
@@ -80,7 +79,23 @@ public class AppController {
             tb.addRow(obj);
         }
         getFrame().visitorsTable.setModel(tb.getModel());
-        getFrame().visitorsTable.removeColumn(getFrame().visitorsTable.getColumnModel().getColumn(0));
+        getFrame().visitorsTable.removeColumn(getFrame().visitorsTable.getColumnModel().getColumn(0));        
+    }
+    
+    public void searchTable( String keyword ){
+         int currentTab = getFrame().getCurrentTab();
+         switch(currentTab){
+            case 0:
+                this.searchVisitorTable(keyword);
+                break;
+            case 1:
+                this.searchMessageTable(keyword);
+                break;
+            case 2:
+                break;
+            default:
+                break;
+         }
     }
     
     public void loadMessageTable(){
@@ -88,6 +103,23 @@ public class AppController {
         TableWidget tb = new TableWidget(vistorsColumns);
         System.out.println(calendarQuery("message_date"));
         List<Message> msg = new Message().findAllBySql(calendarQuery("message_date"));
+        for( Message m : msg ){
+            Object[] obj = { 
+                m.currentPk(),
+                m.getMessageTime(),
+                m.getMessageFor(),
+                m.getMessageNote()};
+           tb.addRow(obj);
+        }
+        getFrame().messageTable.setModel(tb.getModel());
+        getFrame().messageTable.removeColumn(getFrame().messageTable.getColumnModel().getColumn(0));
+    }
+    
+    public void searchMessageTable( String keyword ){
+        getFrame().DaysList.clearSelection();
+        String [] vistorsColumns = {"id","Time","For","Exceprt"};
+        TableWidget tb = new TableWidget(vistorsColumns);
+        List<Message> msg = new Message().findAllBySql(new Message().searchDb(keyword));
         for( Message m : msg ){
             Object[] obj = { 
                 m.currentPk(),
@@ -114,6 +146,16 @@ public class AppController {
         vePopup.setTitle("Visitor Details");
         vePopup.loadVisitor();
         vePopup.setVisible(true);
+    }
+    
+    public void editMessage( int Id ){
+        Message msg = new Message();
+        msg.findByPk(Id);
+        MessageForm msgForm = new MessageForm(getFrame(),true);
+        msgForm.setLocationRelativeTo(null);
+        msgForm.setTitle("Message Details");
+        msgForm.loadMessage(msg);
+        msgForm.setVisible(true);
     }
     
     public void sendMail(String[] to, String subject, String body){
@@ -152,6 +194,35 @@ public class AppController {
         fm.setTitle("Search Current Table");
         fm.setLocationRelativeTo(null);
         fm.setVisible(true);
+    }
+    
+    public String getSelectedSummary(){
+        String output="";
+        int currentTab = getFrame().getCurrentTab();
+         switch(currentTab){
+            case 0:
+                output = this.getVisitorSummary();
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+                break;
+         }
+        return output;
+    }
+    
+    public String getVisitorSummary(){
+        int index = getFrame().visitorsTable.getSelectedRow();
+        int visitorId = Integer.valueOf(getFrame().visitorsTable.getModel().getValueAt(index, 0).toString());
+        if(index >= 0 ){
+            Visitor vs = new Visitor();
+            vs.findByPk(visitorId);
+            return vs.getSummary();   
+        }else{
+            return "";
+        }
     }
     
     

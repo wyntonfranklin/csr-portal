@@ -11,22 +11,30 @@ package csrportal.views;
  */
 public class SendEmail extends javax.swing.JDialog {
 
+    HomeFrame fm;
     /**
      * Creates new form SendEmail
      */
     public SendEmail(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        fm =  (HomeFrame)this.getParent();
+        addSummary();
+    }
+    
+    private void addSummary(){
+        String summary = fm.controller.getSelectedSummary();
+        messageField.setText(summary);
     }
     
     public void sendEmail(){
-        HomeFrame fm =  (HomeFrame)this.getParent();
         Thread one = new Thread() {
             public void run() {
-                String subject = "Hello world from java";
+                String subject = subjectField.getText();
                 String body = messageField.getText();
                 String recipient = toField.getText();
                 String [] to = {recipient};
+                System.out.println(subject);
                 fm.controller.sendMail(to, subject, body);
             }
          
@@ -48,8 +56,8 @@ public class SendEmail extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         toField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        ccField = new javax.swing.JTextField();
+        subjectLabel = new javax.swing.JLabel();
+        subjectField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         messageField = new javax.swing.JTextArea();
@@ -62,7 +70,7 @@ public class SendEmail extends javax.swing.JDialog {
 
         jLabel1.setText("To");
 
-        jLabel2.setText("CC");
+        subjectLabel.setText("Subject");
 
         jLabel3.setText("Body");
 
@@ -101,9 +109,9 @@ public class SendEmail extends javax.swing.JDialog {
                             .addGap(18, 18, 18)
                             .addComponent(toField, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
+                            .addComponent(subjectLabel)
                             .addGap(18, 18, 18)
-                            .addComponent(ccField))
+                            .addComponent(subjectField))
                         .addComponent(jLabel3)
                         .addComponent(jScrollPane1)))
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -117,8 +125,8 @@ public class SendEmail extends javax.swing.JDialog {
                     .addComponent(toField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(ccField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(subjectLabel)
+                    .addComponent(subjectField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -154,6 +162,7 @@ public class SendEmail extends javax.swing.JDialog {
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
         this.sendEmail();
+        this.setVisible(false);
     }//GEN-LAST:event_sendButtonActionPerformed
 
     /**
@@ -200,14 +209,14 @@ public class SendEmail extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton canelEmail;
-    private javax.swing.JTextField ccField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea messageField;
     private javax.swing.JButton sendButton;
+    private javax.swing.JTextField subjectField;
+    private javax.swing.JLabel subjectLabel;
     private javax.swing.JTextField toField;
     // End of variables declaration//GEN-END:variables
 }

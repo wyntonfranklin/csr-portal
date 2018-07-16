@@ -64,8 +64,8 @@ public class Mailer extends Thread  {
         return subject;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubject(String sub) {
+        this.subject = sub;
     }
 
     @Override

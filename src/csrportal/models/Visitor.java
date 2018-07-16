@@ -282,4 +282,13 @@ public class Visitor extends DBModel {
         return sq.getSearchQuery();
     }
     
+    public String getSummary(){
+        String output = "";
+        output += "Visitor: " + getFullName() + "\n";
+        output += "Reason: " + getReason() + "\n";
+        output += "Email: " + getEmail() + "\n";
+        output += "Visiting: " + getAttendingPerson() + "\n";
+        return output;
+    }
+    
 }
