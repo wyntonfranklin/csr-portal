@@ -75,7 +75,13 @@ public class AppController {
         vm.searchDb(keyword);
         List<Visitor> lv = new Visitor().findAllBySql(vm.searchDb(keyword));
         for( Visitor v : lv ){
-            Object[] obj = {v.currentPk(),v.getVisitDate(),v.getFullName(),v.getReason(),v.getAttendingPerson() };
+            Object[] obj = {
+                v.currentPk(),
+                v.getFormatedDate(),
+                v.getFullName(),
+                v.getReason(),
+                v.getAttendingPerson() 
+            };
             tb.addRow(obj);
         }
         getFrame().visitorsTable.setModel(tb.getModel());
@@ -117,13 +123,13 @@ public class AppController {
     
     public void searchMessageTable( String keyword ){
         getFrame().DaysList.clearSelection();
-        String [] vistorsColumns = {"id","Time","For","Exceprt"};
+        String [] vistorsColumns = {"id","Date","For","Exceprt"};
         TableWidget tb = new TableWidget(vistorsColumns);
         List<Message> msg = new Message().findAllBySql(new Message().searchDb(keyword));
         for( Message m : msg ){
             Object[] obj = { 
                 m.currentPk(),
-                m.getMessageTime(),
+                m.getFormatedDate(),
                 m.getMessageFor(),
                 m.getMessageNote()};
            tb.addRow(obj);
@@ -204,6 +210,7 @@ public class AppController {
                 output = this.getVisitorSummary();
                 break;
             case 1:
+                output = this.getMessageSummary();
                 break;
             case 2:
                 break;
@@ -215,8 +222,8 @@ public class AppController {
     
     public String getVisitorSummary(){
         int index = getFrame().visitorsTable.getSelectedRow();
-        int visitorId = Integer.valueOf(getFrame().visitorsTable.getModel().getValueAt(index, 0).toString());
         if(index >= 0 ){
+            int visitorId = Integer.valueOf(getFrame().visitorsTable.getModel().getValueAt(index, 0).toString());
             Visitor vs = new Visitor();
             vs.findByPk(visitorId);
             return vs.getSummary();   
@@ -224,6 +231,21 @@ public class AppController {
             return "";
         }
     }
+    
+        
+    public String getMessageSummary(){
+        int index = getFrame().messageTable.getSelectedRow();
+        if(index >= 0 ){
+            int msgId = Integer.valueOf(getFrame().messageTable.getModel().getValueAt(index, 0).toString());
+            Message msg = new Message();
+            msg.findByPk(msgId);
+            return msg.getSummary();   
+        }else{
+            return "";
+        }
+    }
+    
+    
     
     
 }

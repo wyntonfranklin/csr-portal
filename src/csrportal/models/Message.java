@@ -10,8 +10,13 @@ import csrportal.helpers.SearchQuery;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -73,6 +78,18 @@ public class Message extends DBModel {
 
     public void setMessageTime(String messageTime) {
         this.messageTime = messageTime;
+    }
+    
+    public String getFormatedDate(){
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+        String strDate="";
+        try {
+            strDate = dateFormat.format(originalFormat.parse(this.getMessageDate()));
+        } catch (ParseException ex) {
+            Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return strDate;
     }
     
     @Override
@@ -179,6 +196,13 @@ public class Message extends DBModel {
         sq.likeQuery("note", value, SearchQuery.OP_OR);
         System.out.println(sq.getSearchQuery());
         return sq.getSearchQuery();
+    }
+    
+    public String getSummary(){
+        String output = "";
+        output += "Message For: " + this.getMessageFor() + "\n";
+        output += "Details: " + this.getMessageNote() + "\n";
+        return output;
     }
     
 }
