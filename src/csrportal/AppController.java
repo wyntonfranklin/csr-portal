@@ -9,6 +9,7 @@ import csrportal.helpers.Mailer;
 import csrportal.helpers.TableWidget;
 import csrportal.models.Message;
 import csrportal.models.Visitor;
+import csrportal.views.AppointmentForm;
 import csrportal.views.VisitorForm;
 import csrportal.views.HomeFrame;
 import csrportal.views.MessageForm;
@@ -192,6 +193,13 @@ public class AppController {
         mf.setTitle("New Message");
         mf.setLocationRelativeTo(null);
         mf.setVisible(true);
+    }
+    
+    public void openAppointmentForm(){
+        AppointmentForm af = new AppointmentForm(getFrame(),true);
+        af.setTitle("New Appointment");
+        af.setLocationRelativeTo(null);
+        af.setVisible(true);
     }
     
     
