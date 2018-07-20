@@ -7,6 +7,7 @@ package csrportal;
 
 import csrportal.helpers.Mailer;
 import csrportal.helpers.TableWidget;
+import csrportal.models.Appointment;
 import csrportal.models.Message;
 import csrportal.models.Visitor;
 import csrportal.views.AppointmentForm;
@@ -199,7 +200,18 @@ public class AppController {
         AppointmentForm af = new AppointmentForm(getFrame(),true);
         af.setTitle("New Appointment");
         af.setLocationRelativeTo(null);
+        af.loadAppointment(new Appointment());
         af.setVisible(true);
+    }
+    
+    public void editAppointment(int Id){
+        Appointment app = new Appointment();
+        app.findByPk(Id);
+        AppointmentForm appForm = new AppointmentForm(getFrame(),true);
+        appForm.setLocationRelativeTo(null);
+        appForm.setTitle("Appointment Details");
+        appForm.loadAppointment(app);
+        appForm.setVisible(true);
     }
     
     

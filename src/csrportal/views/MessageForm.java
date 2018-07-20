@@ -26,7 +26,7 @@ public class MessageForm extends javax.swing.JDialog {
     
     private Message msg;
     private static final String TIME_FORMAT = "hh:mm a";
-     private HomeFrame app;
+    private HomeFrame app;
     
     
     public MessageForm(java.awt.Frame parent, boolean modal) {
