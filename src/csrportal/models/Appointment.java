@@ -6,9 +6,11 @@
 package csrportal.models;
 
 import csrportal.helpers.DBModel;
+import csrportal.helpers.SearchQuery;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -130,14 +132,33 @@ public class Appointment extends DBModel{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+
     @Override
-    public List<?> findAllBySql(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Appointment> findAllBySql(String query) {
+        List<Appointment> allresults = new ArrayList<>();
+        rs = getAllColumnsBySql(query);
+        try{
+            while(rs.next()){
+                Appointment tstClass = new Appointment();
+                tstClass.setAttributes(rs);
+                allresults.add(tstClass);
+             }   
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return allresults;
     }
 
     @Override
     public void findByPk(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     rs = getColumn(id);
+         try{
+            while(rs.next()){
+                setAttributes(rs);
+             }   
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        } 
     }
 
     @Override
@@ -176,6 +197,18 @@ public class Appointment extends DBModel{
     @Override
     public List<Object[]> getTableRows() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    public String searchDb( String value ){
+        SearchQuery sq = new SearchQuery();
+        sq.likeQuery("app_meeting", value, SearchQuery.OP_OR);
+        sq.likeQuery("app_person", value, SearchQuery.OP_OR);
+        sq.likeQuery("contact_email", value, SearchQuery.OP_OR);
+        sq.likeQuery("contact_phone", value, SearchQuery.OP_OR);
+        sq.likeQuery("reason", value, SearchQuery.OP_OR);
+        System.out.println(sq.getSearchQuery());
+        return sq.getSearchQuery();
     }
     
 }

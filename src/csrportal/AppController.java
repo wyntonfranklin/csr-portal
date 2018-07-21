@@ -100,6 +100,7 @@ public class AppController {
                 this.searchMessageTable(keyword);
                 break;
             case 2:
+                this.searchAppointmentTable(keyword);
                 break;
             default:
                 break;
@@ -123,6 +124,24 @@ public class AppController {
         getFrame().messageTable.removeColumn(getFrame().messageTable.getColumnModel().getColumn(0));
     }
     
+    public void loadAppointmentTable(){
+        String [] vistorsColumns = {"id","Date","Time","Person","Meeting"};
+        TableWidget tb = new TableWidget(vistorsColumns);
+        System.out.println(calendarQuery("app_date"));
+        List<Appointment> app= new Appointment().findAllBySql(calendarQuery("app_date"));
+        for( Appointment a : app ){
+            Object[] obj = { 
+                a.currentPk(),
+                a.getAppDate(),
+                a.getAppTime(),
+                a.getAppPerson(),
+                a.getAppMeeting()};
+           tb.addRow(obj);
+        }
+        getFrame().appointmentTable.setModel(tb.getModel());
+        getFrame().appointmentTable.removeColumn(getFrame().appointmentTable.getColumnModel().getColumn(0));
+    }
+    
     public void searchMessageTable( String keyword ){
         getFrame().DaysList.clearSelection();
         String [] vistorsColumns = {"id","Date","For","Exceprt"};
@@ -138,6 +157,23 @@ public class AppController {
         }
         getFrame().messageTable.setModel(tb.getModel());
         getFrame().messageTable.removeColumn(getFrame().messageTable.getColumnModel().getColumn(0));
+    }
+    
+       public void searchAppointmentTable( String keyword ){
+        getFrame().DaysList.clearSelection();
+        String [] vistorsColumns = {"id","Date","Person","Meeting"};
+        TableWidget tb = new TableWidget(vistorsColumns);
+        List<Appointment> model = new Appointment().findAllBySql(new Appointment().searchDb(keyword));
+        for( Appointment m : model ){
+            Object[] obj = { 
+                m.currentPk(),
+                m.getAppDate(),
+                m.getAppPerson(),
+                m.getAppMeeting()};
+           tb.addRow(obj);
+        }
+        getFrame().appointmentTable.setModel(tb.getModel());
+        getFrame().appointmentTable.removeColumn(getFrame().appointmentTable.getColumnModel().getColumn(0));
     }
     
     public Visitor findVisitor(int Id ){

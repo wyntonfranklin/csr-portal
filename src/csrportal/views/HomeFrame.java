@@ -149,6 +149,7 @@ public class HomeFrame extends javax.swing.JFrame {
                 controller.loadMessageTable();
                 break;
             case 2:
+                controller.loadAppointmentTable();
                 break;
             default:
                 break;
@@ -233,6 +234,8 @@ public class HomeFrame extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         messageTable = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
+        scorllPane1 = new javax.swing.JScrollPane();
+        appointmentTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -395,15 +398,17 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Messages", jPanel5);
 
+        scorllPane1.setViewportView(appointmentTable);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 479, Short.MAX_VALUE)
+            .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Appointments", jPanel6);
@@ -443,7 +448,6 @@ public class HomeFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -558,6 +562,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JList<String> DaysList;
+    public javax.swing.JTable appointmentTable;
     private org.jdesktop.swingx.JXDatePicker calendarView;
     private org.jdesktop.swingx.plaf.DatePickerAddon datePickerAddon1;
     private javax.swing.JButton jButton1;
@@ -577,6 +582,7 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JTable messageTable;
+    public javax.swing.JScrollPane scorllPane1;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JButton sendEmailButton;
