@@ -5,6 +5,7 @@
  */
 package csrportal;
 
+import csrportal.helpers.AppProperties;
 import csrportal.helpers.Mailer;
 import csrportal.helpers.TableWidget;
 import csrportal.models.Appointment;
@@ -16,7 +17,14 @@ import csrportal.views.HomeFrame;
 import csrportal.views.MessageForm;
 import csrportal.views.SearchForm;
 import csrportal.views.SendEmail;
+import csrportal.views.SettingsForm;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -202,6 +210,8 @@ public class AppController {
         msgForm.setVisible(true);
     }
     
+
+    
     public void sendMail(String[] to, String subject, String body){
         Mailer mail = new Mailer();
         mail.setMessage(body);
@@ -269,6 +279,7 @@ public class AppController {
                 output = this.getMessageSummary();
                 break;
             case 2:
+                output = this.getAppointmentSummary();
                 break;
             default:
                 break;
@@ -299,6 +310,42 @@ public class AppController {
         }else{
             return "";
         }
+    }
+    
+    public String getAppointmentSummary(){
+        int index = getFrame().appointmentTable.getSelectedRow();
+        if(index >=0 ){
+            int appId = Integer.valueOf(getFrame().appointmentTable.getModel().getValueAt(index, 0).toString());
+            Appointment app = new Appointment();
+            app.findByPk(appId);
+            return app.getSummary();
+        }else{
+            return "";
+        }
+    }
+    
+    public void openSettingsForm(){
+        SettingsForm setForm = new SettingsForm(getFrame(),true);
+        setForm.setLocationRelativeTo(null);
+        setForm.setTitle("Edit Settings");
+        setForm.setContext(getFrame());
+        setForm.setVisible(true);
+        
+    }
+
+    
+    public void startUpActions(){
+  
+    }
+    
+    public String defaultDateFormat(){
+       AppProperties prop = new AppProperties();
+       return prop.getDefaultDate();
+    }
+    
+    public String defaultTimeFormat(){
+        AppProperties prop = new AppProperties();
+        return prop.getDefaultTime();
     }
     
     

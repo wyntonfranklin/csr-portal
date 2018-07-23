@@ -28,6 +28,8 @@ public class VisitorForm extends javax.swing.JDialog {
     
     
     private static final String TIME_FORMAT = "hh:mm a";
+    public String default_date = "";
+    public String default_time ="";
     private Visitor currentVisitor;
     private HomeFrame app;
     
@@ -42,6 +44,9 @@ public class VisitorForm extends javax.swing.JDialog {
         initComponents();
         currentVisitor = cvs;
         app = (HomeFrame)parent;
+        default_date = app.controller.defaultDateFormat();
+        default_time = app.controller.defaultTimeFormat();
+        
         setCalendarDate();
         setSpinner();
     }
@@ -70,7 +75,7 @@ public class VisitorForm extends javax.swing.JDialog {
     
     public String getSpinnerValue(){
         Date dt = (Date)jSpinner1.getValue();
-        SimpleDateFormat format = new SimpleDateFormat(VisitorForm.TIME_FORMAT);
+        SimpleDateFormat format = new SimpleDateFormat(default_time);
         return format.format(dt);
     }
     
@@ -79,10 +84,10 @@ public class VisitorForm extends javax.swing.JDialog {
             Date date = new Date();
             SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
             jSpinner1.setModel(sm);
-            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,VisitorForm.TIME_FORMAT);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,default_time);
             jSpinner1.setEditor(de);   
         }else{
-            SimpleDateFormat format = new SimpleDateFormat(VisitorForm.TIME_FORMAT);
+            SimpleDateFormat format = new SimpleDateFormat(default_time);
             Date date = new Date();
             try {
                 if(currentVisitor.getVisitTime() != null){
@@ -93,7 +98,7 @@ public class VisitorForm extends javax.swing.JDialog {
             }
             SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
             jSpinner1.setModel(sm);
-            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,VisitorForm.TIME_FORMAT);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1,default_time);
             jSpinner1.setEditor(de);   
         }
     }
@@ -113,7 +118,7 @@ public class VisitorForm extends javax.swing.JDialog {
     }
     
     public String getDateField(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat(default_date);
         String strDate = dateFormat.format(visitDateField.getDate());
         return strDate;
     }
@@ -122,7 +127,7 @@ public class VisitorForm extends javax.swing.JDialog {
         if(date == null ){
             date = Calendar.getInstance().getTime().toString();
         }
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat(default_date);
         Date strDate=null;
         try {
             strDate = dateFormat.parse(date);

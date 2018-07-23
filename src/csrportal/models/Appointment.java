@@ -211,4 +211,13 @@ public class Appointment extends DBModel{
         return sq.getSearchQuery();
     }
     
+    public String getSummary(){
+        String output = "";
+        output += "Person: " + this.getAppPerson() + "\n";
+        output += "Meeting: " + this.getAppMeeting() + "\n";
+        output += "Date: " + this.getAppDate() + "\n";
+        output += "Time: " + this.getAppTime() + "\n";
+        return output;
+    }
+    
 }
