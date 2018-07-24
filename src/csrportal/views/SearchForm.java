@@ -18,6 +18,11 @@ public class SearchForm extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+    
+    public void searchCurrentTable(){
+        HomeFrame fm = (HomeFrame)(this.getParent());
+        fm.controller.searchTable(searchInput.getText());  
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,7 +41,19 @@ public class SearchForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel1KeyPressed(evt);
+            }
+        });
+
         jLabel1.setText("Search");
+
+        searchInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchInputKeyPressed(evt);
+            }
+        });
 
         searchButton.setText("Search");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -105,9 +122,24 @@ public class SearchForm extends javax.swing.JDialog {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
         //this.getParent()
-        HomeFrame fm = (HomeFrame)(this.getParent());
-        fm.controller.searchTable(searchInput.getText());
+        this.searchCurrentTable();
+        this.setVisible(false);
     }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == evt.VK_ENTER){
+            System.out.println("Pressed");
+        }
+    }//GEN-LAST:event_jPanel1KeyPressed
+
+    private void searchInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchInputKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == evt.VK_ENTER){
+            this.searchCurrentTable();
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_searchInputKeyPressed
 
     /**
      * @param args the command line arguments

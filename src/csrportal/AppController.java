@@ -18,6 +18,9 @@ import csrportal.views.MessageForm;
 import csrportal.views.SearchForm;
 import csrportal.views.SendEmail;
 import csrportal.views.SettingsForm;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -152,13 +155,14 @@ public class AppController {
     
     public void searchMessageTable( String keyword ){
         getFrame().DaysList.clearSelection();
-        String [] vistorsColumns = {"id","Date","For","Exceprt"};
+        String [] vistorsColumns = {"id","Date","Time","For","Exceprt"};
         TableWidget tb = new TableWidget(vistorsColumns);
         List<Message> msg = new Message().findAllBySql(new Message().searchDb(keyword));
         for( Message m : msg ){
             Object[] obj = { 
                 m.currentPk(),
                 m.getFormatedDate(),
+                m.getMessageTime(),
                 m.getMessageFor(),
                 m.getMessageNote()};
            tb.addRow(obj);
@@ -169,13 +173,14 @@ public class AppController {
     
        public void searchAppointmentTable( String keyword ){
         getFrame().DaysList.clearSelection();
-        String [] vistorsColumns = {"id","Date","Person","Meeting"};
+        String [] vistorsColumns = {"id","Date","Time","Person","Meeting"};
         TableWidget tb = new TableWidget(vistorsColumns);
         List<Appointment> model = new Appointment().findAllBySql(new Appointment().searchDb(keyword));
         for( Appointment m : model ){
             Object[] obj = { 
                 m.currentPk(),
-                m.getAppDate(),
+                m.getFormatedDate(),
+                m.getAppTime(),
                 m.getAppPerson(),
                 m.getAppMeeting()};
            tb.addRow(obj);
@@ -268,6 +273,14 @@ public class AppController {
         fm.setVisible(true);
     }
     
+    public void openContentForm(){
+        
+    }
+    
+    public void openAboutForm(){
+        
+    }
+    
     public String getSelectedSummary(){
         String output="";
         int currentTab = getFrame().getCurrentTab();
@@ -285,6 +298,13 @@ public class AppController {
                 break;
          }
         return output;
+    }
+    
+    public void sendTextToClipBoard(){
+        String myString = this.getSelectedSummary();
+        StringSelection stringSelection = new StringSelection(myString);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
     }
     
     public String getVisitorSummary(){

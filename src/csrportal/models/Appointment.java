@@ -10,8 +10,13 @@ import csrportal.helpers.SearchQuery;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -92,6 +97,18 @@ public class Appointment extends DBModel{
 
     public void setAppDetails(String appDetails) {
         this.appDetails = appDetails;
+    }
+    
+    public String getFormatedDate(){
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+        String strDate="";
+        try {
+            strDate = dateFormat.format(originalFormat.parse(this.getAppDate()));
+        } catch (ParseException ex) {
+            Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return strDate;
     }
     
     

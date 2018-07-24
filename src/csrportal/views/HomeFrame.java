@@ -201,6 +201,10 @@ public class HomeFrame extends javax.swing.JFrame {
         controller.openSearchForm();
     }
     
+    public void copyRecord(){
+        controller.sendTextToClipBoard();
+    }
+    
     
 
     /**
@@ -242,18 +246,18 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        importMenuItem = new javax.swing.JMenuItem();
+        exportMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        quitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        copyMenuItem = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        settingsMenuItem = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        contentMenuItem = new javax.swing.JMenuItem();
+        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -478,54 +482,54 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jMenu1.add(jMenu3);
 
-        jMenuItem9.setText("Import");
-        jMenu1.add(jMenuItem9);
+        importMenuItem.setText("Import");
+        jMenu1.add(importMenuItem);
 
-        jMenuItem10.setText("Export");
-        jMenu1.add(jMenuItem10);
+        exportMenuItem.setText("Export");
+        jMenu1.add(exportMenuItem);
         jMenu1.add(jSeparator2);
 
-        jMenuItem11.setText("Quit");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+        quitMenuItem.setText("Quit");
+        quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
+                quitMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem11);
+        jMenu1.add(quitMenuItem);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
 
-        jMenuItem5.setText("Copy");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        copyMenuItem.setText("Copy");
+        copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                copyMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        jMenu2.add(copyMenuItem);
 
         jMenuItem6.setText("Paste");
         jMenu2.add(jMenuItem6);
         jMenu2.add(jSeparator1);
 
-        jMenuItem7.setText("Preferences");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        settingsMenuItem.setText("Preferences");
+        settingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                settingsMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem7);
+        jMenu2.add(settingsMenuItem);
 
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Help");
 
-        jMenuItem4.setText("Content");
-        jMenu4.add(jMenuItem4);
+        contentMenuItem.setText("Content");
+        jMenu4.add(contentMenuItem);
 
-        jMenuItem8.setText("About");
-        jMenu4.add(jMenuItem8);
+        aboutMenuItem.setText("About");
+        jMenu4.add(aboutMenuItem);
 
         jMenuBar1.add(jMenu4);
 
@@ -646,19 +650,20 @@ public class HomeFrame extends javax.swing.JFrame {
         controller.openAppointmentForm();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+        this.copyRecord();
+    }//GEN-LAST:event_copyMenuItemActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void settingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMenuItemActionPerformed
         // TODO add your handling code here:
         controller.openSettingsForm();
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_settingsMenuItemActionPerformed
 
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
         // TODO add your handling code here:
         System.exit(0);
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
+    }//GEN-LAST:event_quitMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -697,9 +702,14 @@ public class HomeFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JList<String> DaysList;
+    private javax.swing.JMenuItem aboutMenuItem;
     public javax.swing.JTable appointmentTable;
     private org.jdesktop.swingx.JXDatePicker calendarView;
+    private javax.swing.JMenuItem contentMenuItem;
+    private javax.swing.JMenuItem copyMenuItem;
     private org.jdesktop.swingx.plaf.DatePickerAddon datePickerAddon1;
+    private javax.swing.JMenuItem exportMenuItem;
+    private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -709,16 +719,9 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -732,10 +735,12 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JTable messageTable;
+    private javax.swing.JMenuItem quitMenuItem;
     public javax.swing.JScrollPane scorllPane1;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JButton sendEmailButton;
+    private javax.swing.JMenuItem settingsMenuItem;
     private javax.swing.JButton todayButton;
     public javax.swing.JTable visitorsTable;
     // End of variables declaration//GEN-END:variables
