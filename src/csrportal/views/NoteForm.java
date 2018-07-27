@@ -5,18 +5,57 @@
  */
 package csrportal.views;
 
+import csrportal.models.Note;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author shady
  */
 public class NoteForm extends javax.swing.JDialog {
 
+    private Note note;
+    private static final String TIME_FORMAT = "hh:mm a";
+    private HomeFrame mainApp;
+    
     /**
      * Creates new form NoteForm
      */
     public NoteForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        mainApp = (HomeFrame)parent;
+    }
+    
+    public void setNote(Note nt){
+        note = nt;
+    }
+    
+    public void setFormAttributes(){
+        noteField.setText(note.getNoteContent());
+        tagsField.setText(note.getTags());
+    }
+    
+    public void save(){
+        note.setNoteContent(noteField.getText());
+        note.setTags(tagsField.getText());
+        if(note.isNewRecord()){
+            note.setNoteDate(this.getDate());   
+            note.setNoteTime(this.getTime());
+        }
+        note.save();
+    }
+    
+    public String getDate(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+    }
+    
+    public String getTime(){
+        SimpleDateFormat format = new SimpleDateFormat(NoteForm.TIME_FORMAT);
+        return format.format(Calendar.getInstance().getTime());
     }
 
     /**
@@ -48,8 +87,18 @@ public class NoteForm extends javax.swing.JDialog {
         jLabel2.setText("Tags");
 
         saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -102,6 +151,18 @@ public class NoteForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+        this.save();
+        mainApp.refreshTable();
+        this.setVisible(false);
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments

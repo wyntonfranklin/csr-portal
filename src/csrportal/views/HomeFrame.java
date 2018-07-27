@@ -65,7 +65,6 @@ public class HomeFrame extends javax.swing.JFrame {
     public void addTabbedChangedListener(){
         jTabbedPane1.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
-                System.out.println("Tab: " + jTabbedPane1.getSelectedIndex());
                 currentTab = jTabbedPane1.getSelectedIndex();
                // setTableFilter();
                 refreshTable();
@@ -151,6 +150,9 @@ public class HomeFrame extends javax.swing.JFrame {
             case 2:
                 controller.loadAppointmentTable();
                 break;
+            case 3:
+                controller.loadNoteTable();
+                break;
             default:
                 break;
         }
@@ -181,6 +183,9 @@ public class HomeFrame extends javax.swing.JFrame {
                 break; 
             case 2:
                 controller.openAppointmentForm();
+                break;
+            case 3:
+                controller.openNoteForm();
                 break;
             default:
                 break;
@@ -242,13 +247,14 @@ public class HomeFrame extends javax.swing.JFrame {
         appointmentTable = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        noteTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        noteMenuItem = new javax.swing.JMenuItem();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -442,18 +448,12 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Appointments", jPanel6);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        noteTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                noteTableMouseClicked(evt);
             }
-        ));
-        jScrollPane4.setViewportView(jTable1);
+        });
+        jScrollPane4.setViewportView(noteTable);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -511,6 +511,14 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem3);
 
+        noteMenuItem.setText("Add Note");
+        noteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu3.add(noteMenuItem);
+
         jMenu1.add(jMenu3);
 
         importMenuItem.setText("Import");
@@ -557,9 +565,19 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenu4.setText("Help");
 
         contentMenuItem.setText("Content");
+        contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contentMenuItemActionPerformed(evt);
+            }
+        });
         jMenu4.add(contentMenuItem);
 
         aboutMenuItem.setText("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
         jMenu4.add(aboutMenuItem);
 
         jMenuBar1.add(jMenu4);
@@ -696,6 +714,30 @@ public class HomeFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_quitMenuItemActionPerformed
 
+    private void noteTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noteTableMouseClicked
+        // TODO add your handling code here:
+        int index = noteTable.getSelectedRow();
+        if( evt.getClickCount() == 2 ){
+             int noteId = Integer.valueOf(noteTable.getModel().getValueAt(index,0).toString());
+             this.controller.editNote(noteId);
+        }
+    }//GEN-LAST:event_noteTableMouseClicked
+
+    private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
+        // TODO add your handling code here:
+        this.controller.openContentForm();
+    }//GEN-LAST:event_contentMenuItemActionPerformed
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        // TODO add your handling code here:
+        this.controller.openAboutForm();
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    private void noteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteMenuItemActionPerformed
+        // TODO add your handling code here:
+        this.controller.openNoteForm();
+    }//GEN-LAST:event_noteMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -767,8 +809,9 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     public javax.swing.JTable messageTable;
+    private javax.swing.JMenuItem noteMenuItem;
+    public javax.swing.JTable noteTable;
     private javax.swing.JMenuItem quitMenuItem;
     public javax.swing.JScrollPane scorllPane1;
     private javax.swing.JButton searchButton;

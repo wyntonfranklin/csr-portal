@@ -200,4 +200,9 @@ public class Note extends DBModel {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public String getSummary(){
+        String output = "";
+        output += "Note: " + this.getNoteContent() + "\n";
+        return output;
+    }
 }

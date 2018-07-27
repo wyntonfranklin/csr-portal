@@ -7,6 +7,7 @@ package csrportal.views;
 
 import csrportal.CSRPortal;
 import csrportal.helpers.AppProperties;
+import csrportal.helpers.DB;
 
 /**
  *
@@ -25,14 +26,75 @@ public class StartUpForm extends javax.swing.JDialog {
     
     public void appInit(){
         this.createTables();
+        this.setAppAsLoaded();
+    }
+    
+    public void setAppAsLoaded(){
         AppProperties prop = new AppProperties();
         prop.setIsAppLoaded("true");
         prop.save();
     }
     
     public void createTables(){
+        DB db = new DB();
+        db.createTable(this.createAppointments());
+        db.createTable(this.createMessages());
+        db.createTable(this.createNotes());
+        db.createTable(this.createVisitors());
+        System.out.println("tables created");
         
     }
+    
+    public String createAppointments(){
+        String sql ="CREATE TABLE IF NOT EXISTS \"Appointments\" (\n" +
+        "`id` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+        "`app_date` TEXT,\n" +
+        "`app_time` TEXT,\n" +
+        "`app_person` TEXT,\n" +
+        "`app_meeting` TEXT,\n" +
+        "`contact_email` TEXT,\n" +
+        "`contact_phone` TEXT,\n" +
+        "`reason` TEXT\n" +")";
+        return sql;
+    }
+    
+    public String createMessages(){
+        String sql = "CREATE TABLE IF NOT EXISTS `Messages` (\n" +
+        "`id` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+        "`message_for` TEXT,\n" +
+        "`note` TEXT,\n" +
+        "`message_date` TEXT,\n" +
+        "`message_time` TEXT\n" +")";
+        return sql;
+    }
+    
+    public String createNotes(){
+        String sql = "CREATE TABLE IF NOT EXISTS `Notes` (\n" +
+        "`id` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+        "`note` TEXT,\n" +
+        "`note_date` TEXT,\n" +
+        "`note_time` TEXT,\n" +
+        "`tags`	TEXT\n" +")";
+        return sql;
+    }
+    
+    public String createVisitors(){
+        String sql = "CREATE TABLE IF NOT EXISTS \"Visitors\" (\n" +
+        "`visitor_id` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+        "`first_name` TEXT,\n" +
+        "`last_name` TEXT,\n" +
+        "`mailing_address` TEXT,\n" +
+        "`address` TEXT,\n" +
+        "`primary_contact` TEXT,\n" +
+        "`secondary_contact` TEXT,\n" +
+        "`reason` TEXT,\n" +
+        "`visit_date` TEXT,\n" +
+        "`visit_time` TEXT,\n" +
+        "`attending_person` TEXT,\n" +
+        "`email` TEXT\n" +")";
+        return sql;
+    }
+        
     
  
 

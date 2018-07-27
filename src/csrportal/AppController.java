@@ -11,10 +11,14 @@ import csrportal.helpers.TableWidget;
 import csrportal.models.Appointment;
 import csrportal.models.Message;
 import csrportal.models.Visitor;
+import csrportal.models.Note;
+import csrportal.views.AboutForm;
 import csrportal.views.AppointmentForm;
+import csrportal.views.ContentForm;
 import csrportal.views.VisitorForm;
 import csrportal.views.HomeFrame;
 import csrportal.views.MessageForm;
+import csrportal.views.NoteForm;
 import csrportal.views.SearchForm;
 import csrportal.views.SendEmail;
 import csrportal.views.SettingsForm;
@@ -64,7 +68,6 @@ public class AppController {
     public void loadVisitorsTable(){
         String [] vistorsColumns = {"id","Time","Name","Reason","To"};
         TableWidget tb = new TableWidget(vistorsColumns);
-        System.out.println(calendarQuery("visit_date"));
         List<Visitor> lv = new Visitor().findAllBySql(calendarQuery("visit_date"));
         for( Visitor v : lv ){
             Object[] obj = {v.currentPk(),v.getVisitTime(),v.getFullName(),v.getReason(),v.getAttendingPerson() };
@@ -113,6 +116,9 @@ public class AppController {
             case 2:
                 this.searchAppointmentTable(keyword);
                 break;
+            case 3:
+                this.searchNoteTable(keyword);
+                break;
             default:
                 break;
          }
@@ -121,7 +127,6 @@ public class AppController {
     public void loadMessageTable(){
         String [] vistorsColumns = {"id","Time","For","Exceprt"};
         TableWidget tb = new TableWidget(vistorsColumns);
-        System.out.println(calendarQuery("message_date"));
         List<Message> msg = new Message().findAllBySql(calendarQuery("message_date"));
         for( Message m : msg ){
             Object[] obj = { 
@@ -138,7 +143,6 @@ public class AppController {
     public void loadAppointmentTable(){
         String [] vistorsColumns = {"id","Date","Time","Person","Meeting"};
         TableWidget tb = new TableWidget(vistorsColumns);
-        System.out.println(calendarQuery("app_date"));
         List<Appointment> app= new Appointment().findAllBySql(calendarQuery("app_date"));
         for( Appointment a : app ){
             Object[] obj = { 
@@ -151,6 +155,22 @@ public class AppController {
         }
         getFrame().appointmentTable.setModel(tb.getModel());
         getFrame().appointmentTable.removeColumn(getFrame().appointmentTable.getColumnModel().getColumn(0));
+    }
+    
+    public void loadNoteTable(){
+        String [] notesColumns = {"id","Note","Tags","Date"};
+        TableWidget tb = new TableWidget(notesColumns);
+        List<Note> notes= new Note().findAllBySql(calendarQuery("note_date"));
+        for( Note note : notes ){
+            Object[] obj = { 
+                note.currentPk(),
+                note.getNoteContent(),
+                note.getTags(),
+                note.getFormatedDate()};
+           tb.addRow(obj);
+        }
+        getFrame().noteTable.setModel(tb.getModel());
+        getFrame().noteTable.removeColumn(getFrame().noteTable.getColumnModel().getColumn(0));
     }
     
     public void searchMessageTable( String keyword ){
@@ -171,7 +191,7 @@ public class AppController {
         getFrame().messageTable.removeColumn(getFrame().messageTable.getColumnModel().getColumn(0));
     }
     
-       public void searchAppointmentTable( String keyword ){
+    public void searchAppointmentTable( String keyword ){
         getFrame().DaysList.clearSelection();
         String [] vistorsColumns = {"id","Date","Time","Person","Meeting"};
         TableWidget tb = new TableWidget(vistorsColumns);
@@ -188,6 +208,25 @@ public class AppController {
         getFrame().appointmentTable.setModel(tb.getModel());
         getFrame().appointmentTable.removeColumn(getFrame().appointmentTable.getColumnModel().getColumn(0));
     }
+       
+    public void searchNoteTable( String keyword ){
+        getFrame().DaysList.clearSelection();
+        String [] notesColumns = {"id","Date","Time","Note","Tags"};
+        TableWidget tb = new TableWidget(notesColumns);
+        List<Note> model = new Note().findAllBySql(new Note().searchDb(keyword));
+        for( Note note : model ){
+            Object[] obj = { 
+                note.currentPk(),
+                note.getFormatedDate(),
+                note.getNoteTime(),
+                note.getNoteContent(),
+                note.getTags()};
+           tb.addRow(obj);
+        }
+        getFrame().noteTable.setModel(tb.getModel());
+        getFrame().noteTable.removeColumn(getFrame().noteTable.getColumnModel().getColumn(0));
+    }
+    
     
     public Visitor findVisitor(int Id ){
         Visitor vs = new Visitor();
@@ -247,6 +286,14 @@ public class AppController {
         mf.setVisible(true);
     }
     
+    public void openNoteForm(){
+        NoteForm nf = new NoteForm(getFrame(),true);
+        nf.setNote(new Note());
+        nf.setTitle("New Note");
+        nf.setLocationRelativeTo(null);
+        nf.setVisible(true);
+    }
+    
     public void openAppointmentForm(){
         AppointmentForm af = new AppointmentForm(getFrame(),true);
         af.setTitle("New Appointment");
@@ -265,6 +312,17 @@ public class AppController {
         appForm.setVisible(true);
     }
     
+    public void editNote(int Id){
+        Note nt = new Note();
+        nt.findByPk(Id);
+        NoteForm nf = new NoteForm(getFrame(),true);
+        nf.setLocationRelativeTo(null);
+        nf.setTitle("Note Details");
+        nf.setNote(nt);
+        nf.setFormAttributes();
+        nf.setVisible(true);
+    }
+    
     
     public void openSearchForm(){
         SearchForm fm = new SearchForm(getFrame(),true);
@@ -274,10 +332,17 @@ public class AppController {
     }
     
     public void openContentForm(){
-        
+        ContentForm cf = new ContentForm(getFrame(),true);
+        cf.setTitle("CSR Portal Help");
+        cf.setLocationRelativeTo(null);
+        cf.setVisible(true);
     }
     
     public void openAboutForm(){
+        AboutForm af =  new AboutForm(getFrame(),true);
+        af.setTitle("About CSR Portal");
+        af.setLocationRelativeTo(null);
+        af.setVisible(true);
         
     }
     
@@ -293,6 +358,9 @@ public class AppController {
                 break;
             case 2:
                 output = this.getAppointmentSummary();
+                break;
+            case 3:
+                output = this.getNoteSummary();
                 break;
             default:
                 break;
@@ -339,6 +407,18 @@ public class AppController {
             Appointment app = new Appointment();
             app.findByPk(appId);
             return app.getSummary();
+        }else{
+            return "";
+        }
+    }
+    
+    public String getNoteSummary(){
+        int index = getFrame().noteTable.getSelectedRow();
+        if(index >=0 ){
+            int noteId = Integer.valueOf(getFrame().noteTable.getModel().getValueAt(index, 0).toString());
+            Note note = new Note();
+            note.findByPk(noteId);
+            return note.getSummary();
         }else{
             return "";
         }
