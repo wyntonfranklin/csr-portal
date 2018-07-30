@@ -19,20 +19,25 @@ import java.sql.Statement;
  */
 public class DB {
     
-    private static String url = "jdbc:sqlite:csr.db";    
+    private String url = "jdbc:sqlite:csr.db";    
     private static String driverName = "jdbc:sqlite";   
     private static String username = "";   
     private static String password = "";
     private static Connection con;
-    private static String urlstring;
+    private static final String URLSTRING = "jdbc:sqlite:";
     
     
     public DB(){
-        
+        this.setUrl();
     }
     
-    public static void setUrl( String db_url ){
-        url = db_url;
+    private void setUrl(){
+        AppProperties properties = new AppProperties();
+        url = URLSTRING + properties.getFileLocation();
+    }
+    
+    private String getUrl(){
+        return this.url;
     }
     
     
@@ -43,7 +48,7 @@ public class DB {
     public Connection getConnection() {
             try {
                 
-                con = DriverManager.getConnection(url);
+                con = DriverManager.getConnection(this.getUrl());
                 
             } catch (SQLException ex) {
                 // log an exception. fro example:

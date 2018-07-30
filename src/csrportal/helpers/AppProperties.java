@@ -25,6 +25,9 @@ public class AppProperties {
     public String hostName="smtp.mailgun.org";
     public String userName="postmaster@sandbox724a2b1a33f547798d87fbb228859a98.mailgun.org";
     public String password="ed03d08a7acf210ddc17869f05aedb88";
+    public String fileLocation = "csr.db";
+    
+    
     
     public AppProperties(){
        saveProps = new Properties();
@@ -82,6 +85,15 @@ public class AppProperties {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getFileLocation() {
+        return fileLocation;
+    }
+
+    public void setFileLocation(String fileLocation) {
+        this.fileLocation = fileLocation;
+    }
+    
     
     
     public Properties getProperties(){
@@ -104,6 +116,7 @@ public class AppProperties {
          getProperties().setProperty("host",this.getHostName());
          getProperties().setProperty("username", this.getUserName());
          getProperties().setProperty("password",this.getPassword());
+         getProperties().setProperty("dbFile",this.getFileLocation());
     }
     
     public String getProperty(String value){
@@ -128,6 +141,7 @@ public class AppProperties {
         this.setPassword(getProperties().getProperty("password"));
         this.setUserName(getProperties().getProperty("username"));
         this.setHostName(getProperties().getProperty("host"));
+        this.setFileLocation(getProperties().getProperty("dbFile"));
     }
     
     public void resetDefaults(){
@@ -135,6 +149,7 @@ public class AppProperties {
         nProp.setHostName("smtp.mailgun.org");
         nProp.setPassword("ed03d08a7acf210ddc17869f05aedb88");
         nProp.setUserName("postmaster@sandbox724a2b1a33f547798d87fbb228859a98.mailgun.org");
+        nProp.setFileLocation("csr.db");
         nProp.save();
     }
 }
