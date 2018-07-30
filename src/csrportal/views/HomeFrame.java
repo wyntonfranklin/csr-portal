@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -210,6 +211,83 @@ public class HomeFrame extends javax.swing.JFrame {
         controller.sendTextToClipBoard();
     }
     
+    public int getCurrentSelectedRow(){
+        switch (currentTab) {
+            case 0:
+                return visitorsTable.getSelectedRow();
+            case 1:
+                return messageTable.getSelectedRow();
+            case 2:
+                return appointmentTable.getSelectedRow();
+            case 3:
+                return noteTable.getSelectedRow();
+            default:
+                break;
+        }
+        return 0;
+    }
+    
+    public javax.swing.JTable getCurrentTable(){
+        switch (currentTab) {
+            case 0:
+                return visitorsTable;
+            case 1:
+                return messageTable;
+            case 2:
+                return appointmentTable;
+            case 3:
+                return noteTable;
+            default:
+                break;
+        }
+       return visitorsTable;
+    }
+    
+    public void editTable(){
+        int index = this.getCurrentSelectedRow();
+        int modelId = Integer.valueOf(this.getCurrentTable().getModel().getValueAt(index, 0).toString());
+        this.openTableEditForm(modelId);
+    }
+    
+    public void openTableEditForm( int objectId ){
+        switch (currentTab) {
+            case 0:
+                this.controller.editVisitor(objectId);
+                break;
+            case 1:
+                this.controller.editMessage(objectId);
+                break;
+            case 2:
+                this.controller.editAppointment(objectId);
+                break;
+            case 3:
+                this.controller.editNote(objectId);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    public void tableClicked(java.awt.event.MouseEvent evt){
+        if( evt.getClickCount() == 2 ){
+            this.editTable();
+        }
+        if(SwingUtilities.isRightMouseButton(evt)){
+            this.tableLeftClicked(evt);
+        }
+    }
+    
+    public void tableLeftClicked(java.awt.event.MouseEvent evt){
+        javax.swing.JTable table = this.getCurrentTable();
+        int r = table.rowAtPoint(evt.getPoint());
+        if (r >= 0 && r < table.getRowCount()) {
+            table.setRowSelectionInterval(r, r);
+        } else {
+            table.clearSelection();
+        }
+        tableMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+    }
+    
     
 
     /**
@@ -222,6 +300,10 @@ public class HomeFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         datePickerAddon1 = new org.jdesktop.swingx.plaf.DatePickerAddon();
+        tableMenu = new javax.swing.JPopupMenu();
+        editMenuItem = new javax.swing.JMenuItem();
+        rightCopyMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         DaysList = new javax.swing.JList<>();
@@ -267,6 +349,25 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
+
+        editMenuItem.setText("Edit");
+        editMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editMenuItemActionPerformed(evt);
+            }
+        });
+        tableMenu.add(editMenuItem);
+
+        rightCopyMenuItem.setText("Copy");
+        rightCopyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightCopyMenuItemActionPerformed(evt);
+            }
+        });
+        tableMenu.add(rightCopyMenuItem);
+
+        deleteMenuItem.setText("Delete");
+        tableMenu.add(deleteMenuItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -463,9 +564,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 391, Short.MAX_VALUE))
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 970, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Notes", jPanel7);
@@ -616,11 +715,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void visitorsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visitorsTableMouseClicked
         // TODO add your handling code here:
-        int index = visitorsTable.getSelectedRow();
-        if( evt.getClickCount() == 2 ){
-            int evtId = Integer.valueOf(visitorsTable.getModel().getValueAt(index, 0).toString());
-            this.controller.editVisitor(evtId);
-        }
+      this.tableClicked(evt);
     }//GEN-LAST:event_visitorsTableMouseClicked
 
     private void DaysListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DaysListMouseClicked
@@ -668,20 +763,12 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void messageTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_messageTableMouseClicked
         // TODO add your handling code here:
-        int index = messageTable.getSelectedRow();
-        if( evt.getClickCount() == 2 ){
-            int msgId = Integer.valueOf(messageTable.getModel().getValueAt(index, 0).toString());
-            this.controller.editMessage(msgId);
-        }
+        this.tableClicked(evt);
     }//GEN-LAST:event_messageTableMouseClicked
 
     private void appointmentTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_appointmentTableMouseClicked
         // TODO add your handling code here:
-        int index = appointmentTable.getSelectedRow();
-        if( evt.getClickCount() == 2 ){
-             int appointmentId = Integer.valueOf(appointmentTable.getModel().getValueAt(index,0).toString());
-             this.controller.editAppointment(appointmentId);
-        }
+        this.tableClicked(evt);
     }//GEN-LAST:event_appointmentTableMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -714,15 +801,6 @@ public class HomeFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_quitMenuItemActionPerformed
 
-    private void noteTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noteTableMouseClicked
-        // TODO add your handling code here:
-        int index = noteTable.getSelectedRow();
-        if( evt.getClickCount() == 2 ){
-             int noteId = Integer.valueOf(noteTable.getModel().getValueAt(index,0).toString());
-             this.controller.editNote(noteId);
-        }
-    }//GEN-LAST:event_noteTableMouseClicked
-
     private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
         // TODO add your handling code here:
         this.controller.openContentForm();
@@ -737,6 +815,21 @@ public class HomeFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.controller.openNoteForm();
     }//GEN-LAST:event_noteMenuItemActionPerformed
+
+    private void editMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuItemActionPerformed
+        // TODO add your handling code here:
+        this.editTable();
+    }//GEN-LAST:event_editMenuItemActionPerformed
+
+    private void rightCopyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightCopyMenuItemActionPerformed
+        // TODO add your handling code here:
+        this.copyRecord();
+    }//GEN-LAST:event_rightCopyMenuItemActionPerformed
+
+    private void noteTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noteTableMouseClicked
+        // TODO add your handling code here:
+        this.tableClicked(evt);
+    }//GEN-LAST:event_noteTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -781,6 +874,8 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem contentMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private org.jdesktop.swingx.plaf.DatePickerAddon datePickerAddon1;
+    private javax.swing.JMenuItem deleteMenuItem;
+    private javax.swing.JMenuItem editMenuItem;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton jButton1;
@@ -813,11 +908,13 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem noteMenuItem;
     public javax.swing.JTable noteTable;
     private javax.swing.JMenuItem quitMenuItem;
+    private javax.swing.JMenuItem rightCopyMenuItem;
     public javax.swing.JScrollPane scorllPane1;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JButton sendEmailButton;
     private javax.swing.JMenuItem settingsMenuItem;
+    private javax.swing.JPopupMenu tableMenu;
     private javax.swing.JButton todayButton;
     public javax.swing.JTable visitorsTable;
     // End of variables declaration//GEN-END:variables

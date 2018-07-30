@@ -30,10 +30,7 @@ public class CSRPortal {
         if(cs.isAppLoaded().contains("false")){
             cs.openSetupForm();
         }else{
-            HomeFrame mainApp = new HomeFrame();
-            mainApp.setLocationRelativeTo(null);
-            mainApp.setVisible(true);
-            mainApp.setTitle("CSR Portal");   
+            cs.startApp();
         }
     }
     

@@ -18,10 +18,11 @@ public class StartUpForm extends javax.swing.JDialog {
     /**
      * Creates new form StartUpForm
      */
+    
     public StartUpForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.appInit();
+        appInit();
     }
     
     public void appInit(){
@@ -36,13 +37,21 @@ public class StartUpForm extends javax.swing.JDialog {
     }
     
     public void createTables(){
-        DB db = new DB();
-        db.createTable(this.createAppointments());
-        db.createTable(this.createMessages());
-        db.createTable(this.createNotes());
-        db.createTable(this.createVisitors());
-        System.out.println("tables created");
-        
+        Thread createDb;
+        createDb = new Thread() {
+            @Override
+            public void run() {
+                DB db = new DB();
+                db.createTable(createAppointments());
+                db.createTable(createMessages());
+                db.createTable(createNotes());
+                db.createTable(createVisitors());
+                System.out.println("tables created");
+                openApp();
+                
+            };
+        };
+        createDb.start();
     }
     
     public String createAppointments(){
@@ -93,6 +102,14 @@ public class StartUpForm extends javax.swing.JDialog {
         "`attending_person` TEXT,\n" +
         "`email` TEXT\n" +")";
         return sql;
+    }
+    
+    public void openApp(){
+        HomeFrame mainApp = new HomeFrame();
+        mainApp.setLocationRelativeTo(null);
+        mainApp.setVisible(true);
+        mainApp.setTitle("CSR Portal");
+        setVisible(false);
     }
         
     

@@ -148,6 +148,8 @@ public class SettingsForm extends javax.swing.JDialog {
 
         jLabel4.setText("Database Location");
 
+        fileLocationField.setEditable(false);
+
         chooseFile.setText("Select");
         chooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
