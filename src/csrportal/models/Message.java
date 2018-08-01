@@ -204,5 +204,6 @@ public class Message extends DBModel {
         output += "Details: " + this.getMessageNote() + "\n";
         return output;
     }
+
     
 }

@@ -236,5 +236,6 @@ public class Appointment extends DBModel{
         output += "Time: " + this.getAppTime() + "\n";
         return output;
     }
+
     
 }

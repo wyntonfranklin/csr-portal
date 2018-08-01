@@ -346,6 +346,26 @@ public class AppController {
         
     }
     
+    public void deleteVisitor(int Id){
+        Visitor vs = new Visitor();
+        vs.deleteByPk(Id);
+    }
+    
+    public void deleteAppointment(int Id){
+        Appointment app = new Appointment();
+        app.deleteByPk(Id);
+    }
+    
+    public void deleteMessages(int Id){
+        Message msg = new Message();
+        msg.deleteByPk(Id);
+    }
+    
+    public void deleteNotes(int Id){
+        Note nt = new Note();
+        nt.deleteByPk(Id);
+    }
+    
     public String getSelectedSummary(){
         String output="";
         int currentTab = getFrame().getCurrentTab();

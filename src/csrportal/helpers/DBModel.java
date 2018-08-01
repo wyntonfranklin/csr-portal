@@ -25,8 +25,9 @@ public abstract class DBModel {
     private final String qRaw ="SELECT * FROM {tablename} WHERE {condition}";
     private final String qUpdate = "UPDATE {tablename} SET {attributes} WHERE {condition}";
     private final String qInsert = "INSERT INTO {tablename} ({columns}) values({values})";
-    private final String qDelete ="";
-    private final String qDeleteAll ="";
+    private final String qDelete ="DELETE FROM {tablename} WHERE {condition}";
+    private final String qDeleteByPk ="DELETE FROM {tablename} WHERE {primary_key}={pid}";
+    private final String qDeleteAll ="DELETE FROM {tablename}";
     public String tableName = "books";
     public String primaryKey ="id";
     public ResultSet rs;
@@ -60,10 +61,19 @@ public abstract class DBModel {
         return new DB().queryAll(query);
     }
     
+    public void executeQuery( String query ){
+        DB db = new DB();
+        db.executeQuery(query);
+    }
+    
     public ResultSet search(){
         return new DB().queryAll("");
     }
     
+    public void deleteRecordByPk(int Id){
+        String sql = this.deleteByPkQuery(Id);
+        new DB().executeQuery(sql);
+    }
     
     public String getTableName(){
         return tableName;
@@ -124,6 +134,13 @@ public abstract class DBModel {
         return qUpdate
                 .replace("{tablename}", getTableName())
                 .replace("{attributes}", attributes);
+    }
+    
+    public String deleteByPkQuery( int key ){
+        return qDeleteByPk
+                .replace("{tablename}", getTableName())
+                .replace("{primary_key}", getPrimaryKey())
+                .replace("{pid}", String.valueOf(key));
     }
     
     public PreparedStatement getInsertStatement() throws SQLException{
@@ -225,6 +242,12 @@ public abstract class DBModel {
     
     public void insert(){
         save();
+    }
+    
+    public void deleteByPk(int id){
+        String query = deleteByPkQuery(id);
+        System.out.println(query);
+        new DB().executeQuery(query);
     }
     
     

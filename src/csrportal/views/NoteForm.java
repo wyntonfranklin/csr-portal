@@ -81,7 +81,9 @@ public class NoteForm extends javax.swing.JDialog {
         jLabel1.setText("Note");
 
         noteField.setColumns(20);
+        noteField.setLineWrap(true);
         noteField.setRows(5);
+        noteField.setWrapStyleWord(true);
         jScrollPane1.setViewportView(noteField);
 
         jLabel2.setText("Tags");

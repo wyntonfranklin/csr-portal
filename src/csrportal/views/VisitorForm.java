@@ -185,7 +185,9 @@ public class VisitorForm extends javax.swing.JDialog {
         jLabel4.setText("Email");
 
         reasonField.setColumns(20);
+        reasonField.setLineWrap(true);
         reasonField.setRows(5);
+        reasonField.setWrapStyleWord(true);
         jScrollPane1.setViewportView(reasonField);
 
         jLabel5.setText("Reason for Visit");

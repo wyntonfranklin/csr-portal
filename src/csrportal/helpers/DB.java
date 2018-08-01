@@ -82,6 +82,16 @@ public class DB {
         }
     }
     
+    public void executeQuery( String sql ){
+        Statement st;
+        try{
+            st = getConnection().createStatement();
+            st.execute(sql);
+        }catch( SQLException e){
+            System.out.println(e.getMessage());
+        }  
+    }
+    
   
     
     public void updateDb(){

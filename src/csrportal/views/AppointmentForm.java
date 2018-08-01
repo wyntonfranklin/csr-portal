@@ -217,7 +217,9 @@ public class AppointmentForm extends javax.swing.JDialog {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Reason"));
 
         detailsField.setColumns(20);
+        detailsField.setLineWrap(true);
         detailsField.setRows(5);
+        detailsField.setWrapStyleWord(true);
         jScrollPane1.setViewportView(detailsField);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

@@ -185,7 +185,9 @@ public class MessageForm extends javax.swing.JDialog {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Message Details"));
 
         messageField.setColumns(20);
+        messageField.setLineWrap(true);
         messageField.setRows(5);
+        messageField.setWrapStyleWord(true);
         jScrollPane1.setViewportView(messageField);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

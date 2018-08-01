@@ -205,4 +205,5 @@ public class Note extends DBModel {
         output += "Note: " + this.getNoteContent() + "\n";
         return output;
     }
+
 }
