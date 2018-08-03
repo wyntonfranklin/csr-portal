@@ -15,6 +15,7 @@ import csrportal.models.Note;
 import csrportal.views.AboutForm;
 import csrportal.views.AppointmentForm;
 import csrportal.views.ContentForm;
+import csrportal.views.ExportForm;
 import csrportal.views.VisitorForm;
 import csrportal.views.HomeFrame;
 import csrportal.views.MessageForm;
@@ -466,6 +467,13 @@ public class AppController {
     public String defaultTimeFormat(){
         AppProperties prop = new AppProperties();
         return prop.getDefaultTime();
+    }
+    
+    public void openExportForm(){
+        ExportForm exportForm = new ExportForm(getFrame(),true);
+        exportForm.setLocationRelativeTo(null);
+        exportForm.setTitle("Export tables to excel");
+        exportForm.setVisible(true);
     }
     
     

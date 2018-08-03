@@ -9,11 +9,15 @@ import csrportal.AppController;
 import csrportal.PortalCalendar;
 import csrportal.models.Visitor;
 import csrportal.helpers.TableWidget;
+import csrportal.models.Note;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -700,6 +704,11 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenu1.add(importMenuItem);
 
         exportMenuItem.setText("Export");
+        exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportMenuItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(exportMenuItem);
         jMenu1.add(jSeparator2);
 
@@ -912,6 +921,11 @@ public class HomeFrame extends javax.swing.JFrame {
         this.tableClicked(evt);
     }//GEN-LAST:event_appointmentTableMouseClicked
 
+    private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
+        // TODO add your handling code here:
+        this.controller.openExportForm();
+    }//GEN-LAST:event_exportMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -993,7 +1007,7 @@ public class HomeFrame extends javax.swing.JFrame {
     public javax.swing.JTable noteTable;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JMenuItem rightCopyMenuItem;
-    private javax.swing.JScrollPane scorllPane1;
+    public javax.swing.JScrollPane scorllPane1;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JTextField searchField1;

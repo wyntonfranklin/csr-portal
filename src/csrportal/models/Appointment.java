@@ -6,7 +6,9 @@
 package csrportal.models;
 
 import csrportal.helpers.DBModel;
+import csrportal.helpers.ExcelSheet;
 import csrportal.helpers.SearchQuery;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -145,8 +147,19 @@ public class Appointment extends DBModel{
     }
 
     @Override
-    public List<?> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Appointment> findAll() {
+        List<Appointment> allresults = new ArrayList<>();
+        rs = getAllColumns();
+        try{
+            while(rs.next()){
+                Appointment tstClass = new Appointment();
+                tstClass.setAttributes(rs);
+                allresults.add(tstClass);
+             }   
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return allresults;
     }
 
 
@@ -235,6 +248,27 @@ public class Appointment extends DBModel{
         output += "Date: " + this.getAppDate() + "\n";
         output += "Time: " + this.getAppTime() + "\n";
         return output;
+    }
+    
+    public void saveToExcel(String filename) throws IOException{
+        String [] header = this.getColumns();
+        ExcelSheet excel = new ExcelSheet();
+        excel.setHeader(header);
+        excel.setFileName(filename);
+        List<Appointment> app = this.findAll();
+        for( Appointment appointment : app ){
+             String[] rows ={
+                appointment.getAppDate(),
+                appointment.getAppTime(),
+                appointment.getAppPerson(),
+                appointment.getAppMeeting(),
+                appointment.getAppEmail(),
+                appointment.getAppContact(),
+                appointment.getAppDetails()
+            };
+            excel.addRow(rows);
+        }
+        excel.save();
     }
 
     

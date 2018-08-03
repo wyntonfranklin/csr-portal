@@ -6,7 +6,9 @@
 package csrportal.models;
 
 import csrportal.helpers.DBModel;
+import csrportal.helpers.ExcelSheet;
 import csrportal.helpers.SearchQuery;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -127,8 +129,19 @@ public class Message extends DBModel {
     }
 
     @Override
-    public List<?> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Message> findAll() {
+        List<Message> allresults = new ArrayList<>();
+        rs = getAllColumns();
+        try{
+            while(rs.next()){
+                Message tstClass = new Message();
+                tstClass.setAttributes(rs);
+                allresults.add(tstClass);
+             }   
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return allresults;
     }
 
     @Override
@@ -203,6 +216,24 @@ public class Message extends DBModel {
         output += "Message For: " + this.getMessageFor() + "\n";
         output += "Details: " + this.getMessageNote() + "\n";
         return output;
+    }
+    
+    public void saveToExcel(String filename) throws IOException{
+        String [] header = this.getColumns();
+        ExcelSheet excel = new ExcelSheet();
+        excel.setHeader(header);
+        excel.setFileName(filename);
+        List<Message> msg = this.findAll();
+        for( Message message : msg ){
+             String[] rows ={
+                message.getMessageFor(),
+                message.getMessageNote(),
+                message.getMessageDate(),
+                message.getMessageTime()
+            };
+            excel.addRow(rows);
+        }
+        excel.save();
     }
 
     

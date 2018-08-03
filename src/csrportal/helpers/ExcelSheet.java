@@ -29,7 +29,33 @@ public class ExcelSheet{
     
     public ExcelSheet(){
         this.workbook = new HSSFWorkbook();
+        this.createSheet();
+    }
+    
+    public ExcelSheet(String sheet){
+        this.workbook = new HSSFWorkbook(); 
+        this.createSheet(sheet);
+    }
+    
+    
+    private void createSheet(){
         this.sheet = this.workbook.createSheet(sheetName);
+    }
+    
+    private void createSheet(String name){
+         this.sheet = this.workbook.createSheet(name); 
+    }
+    
+    public String getSheetName(){
+        return this.sheetName;
+    }
+    
+    public void setFileName(String fname){
+        this.fileName = fname;
+    }
+    
+    public String getFileName(){
+        return this.fileName;
     }
     
     public void setHeader(String[] rows){
@@ -50,7 +76,7 @@ public class ExcelSheet{
     }
     
     public void save() throws FileNotFoundException, IOException{
-        FileOutputStream fileOut = new FileOutputStream(fileName);
+        FileOutputStream fileOut = new FileOutputStream(getFileName());
         this.getWorkBook().write(fileOut);
         fileOut.close();
         this.getWorkBook().close();

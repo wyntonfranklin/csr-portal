@@ -6,7 +6,9 @@
 package csrportal.models;
 
 import csrportal.helpers.DBModel;
+import csrportal.helpers.ExcelSheet;
 import csrportal.helpers.SearchQuery;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -306,6 +308,31 @@ public class Visitor extends DBModel {
         output += "Email: " + getEmail() + "\n";
         output += "Visiting: " + getAttendingPerson() + "\n";
         return output;
+    }
+    
+    public void saveToExcel(String filename) throws IOException{
+        String [] header = this.getColumns();
+        ExcelSheet excel = new ExcelSheet();
+        excel.setHeader(header);
+        excel.setFileName(filename);
+        List<Visitor> vs = this.findAll();
+        for( Visitor visitor : vs ){
+             String[] rows = {
+                 visitor.getFirstName(),
+                 visitor.getLastName(),
+                 visitor.getMailingAddress(),
+                 visitor.getAddress(),
+                 visitor.getPrimaryContact(),
+                 visitor.getSecondaryContact(),
+                 visitor.getReason(),
+                 visitor.getVisitDate(),
+                 visitor.getVisitTime(),
+                 visitor.getAttendingPerson(),
+                 visitor.getEmail()
+            };
+            excel.addRow(rows);
+        }
+        excel.save();
     }
     
     
