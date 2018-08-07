@@ -375,7 +375,6 @@ public class HomeFrame extends javax.swing.JFrame {
         quitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         copyMenuItem = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         settingsMenuItem = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -731,9 +730,6 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(copyMenuItem);
-
-        jMenuItem6.setText("Paste");
-        jMenu2.add(jMenuItem6);
         jMenu2.add(jSeparator1);
 
         settingsMenuItem.setText("Preferences");
@@ -987,7 +983,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

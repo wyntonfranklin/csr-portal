@@ -21,12 +21,10 @@ public class AboutForm extends javax.swing.JDialog {
     public AboutForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setAboutContent();
     }
     
     public void setAboutContent(){
-        String about = this.readAboutFromFile("about.txt");
-        aboutField.setText(about);
+
     }
     
     
@@ -55,6 +53,8 @@ public class AboutForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        aboutField.setEditable(false);
+        aboutField.setText("Create by wynton franklin\n\nVersion 1.0");
         jScrollPane2.setViewportView(aboutField);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

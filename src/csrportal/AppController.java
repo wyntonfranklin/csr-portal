@@ -476,6 +476,42 @@ public class AppController {
         exportForm.setVisible(true);
     }
     
+    public void exportVisitors(String filename){
+        Visitor vs = new Visitor();
+        try {
+            vs.saveToExcel(filename);
+        } catch (IOException ex) {
+            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void exportMessages(String filename){
+        Message msg = new Message();
+        try {
+            msg.saveToExcel(filename);
+        } catch (IOException ex) {
+            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void exportAppointments(String filename){
+        Appointment app = new Appointment();
+        try {
+            app.saveToExcel(filename);
+        } catch (IOException ex) {
+            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void exportNotes(String filename){
+        Note nt = new Note();
+        try {
+            nt.saveToExcel(filename);
+        } catch (IOException ex) {
+            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     
     

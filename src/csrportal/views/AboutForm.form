@@ -56,6 +56,10 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
             <Component class="javax.swing.JEditorPane" name="aboutField">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="Create by wynton franklin&#xa;&#xa;Version 1.0"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
