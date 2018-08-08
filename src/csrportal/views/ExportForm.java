@@ -78,7 +78,7 @@ public class ExportForm extends javax.swing.JDialog {
 
         jLabel2.setText("Save As");
 
-        fileChooserButton.setText("Open");
+        fileChooserButton.setText("Select");
         fileChooserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileChooserButtonActionPerformed(evt);

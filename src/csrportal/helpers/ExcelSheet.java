@@ -5,14 +5,19 @@
  */
 package csrportal.helpers;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
@@ -110,17 +115,33 @@ public class ExcelSheet{
     
     
     public static void main(String[]args) {
-        ExcelSheet exsheet = new ExcelSheet();
-        String [] headers = {"Name","Job","Contact"};
-        String [] row = {"wynton","programmer","454-3353"};
-        String [] row2 = {"james","maanger","453-3533"};
-        exsheet.setHeader(headers);
-        exsheet.addRow(row);
-        exsheet.addRow(row2);
-        try {
-            exsheet.save();
-        } catch (IOException ex) {
-            Logger.getLogger(ExcelSheet.class.getName()).log(Level.SEVERE, null, ex);
+       try {
+            //Open an excel file as input stream
+            FileInputStream fileInputStream=new FileInputStream(new File("NewExcelFile.xls"));
+            //Get the workbook instance for XLS file
+            //define a workbook
+            HSSFWorkbook hssfWorkbook=new HSSFWorkbook(fileInputStream);
+            //Get first sheet from the workbook
+            HSSFSheet sheet=hssfWorkbook.getSheetAt(0);
+            //Get iterator to all the rows in the current sheet
+            Iterator rowIterator=sheet.iterator();
+            while (rowIterator.hasNext())
+            {
+                Row row=(Row) rowIterator.next();
+                System.out.println("Row Number  "+row.getRowNum());
+                //For each row, iterate through each columns
+                Iterator cellIterator=row.cellIterator();
+                while (cellIterator.hasNext())
+                {
+                    Cell cell=(Cell) cellIterator.next();
+                    System.out.print(cell.getStringCellValue() + ",");
+                }
+                System.out.println("");
+            }
+
+            fileInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

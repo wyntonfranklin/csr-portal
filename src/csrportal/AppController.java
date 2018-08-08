@@ -18,6 +18,7 @@ import csrportal.views.ContentForm;
 import csrportal.views.ExportForm;
 import csrportal.views.VisitorForm;
 import csrportal.views.HomeFrame;
+import csrportal.views.ImportForm;
 import csrportal.views.MessageForm;
 import csrportal.views.NoteForm;
 import csrportal.views.SearchForm;
@@ -474,6 +475,13 @@ public class AppController {
         exportForm.setLocationRelativeTo(null);
         exportForm.setTitle("Export tables to excel");
         exportForm.setVisible(true);
+    }
+    
+    public void openImportForm(){
+        ImportForm importForm = new ImportForm(getFrame(),true);
+        importForm.setLocationRelativeTo(null);
+        importForm.setTitle("Import tables from excel");
+        importForm.setVisible(true);
     }
     
     public void exportVisitors(String filename){

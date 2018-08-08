@@ -700,6 +700,11 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenu1.add(jMenu3);
 
         importMenuItem.setText("Import");
+        importMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importMenuItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(importMenuItem);
 
         exportMenuItem.setText("Export");
@@ -921,6 +926,11 @@ public class HomeFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.controller.openExportForm();
     }//GEN-LAST:event_exportMenuItemActionPerformed
+
+    private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
+        // TODO add your handling code here:
+        this.controller.openImportForm();
+    }//GEN-LAST:event_importMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
