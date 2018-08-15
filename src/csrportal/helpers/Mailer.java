@@ -23,11 +23,11 @@ import javax.mail.internet.MimeMessage;
 public class Mailer extends Thread  {
 
  
-    private static String USER_NAME = "postmaster@sandbox724a2b1a33f547798d87fbb228859a98.mailgun.org";  // GMail user name (just the part before "@gmail.com")
-    private static String PASSWORD = "ed03d08a7acf210ddc17869f05aedb88"; // GMail password
-    private static String RECIPIENT = "wynton.franklin@gmail.com";
-    private static String FROM = "shadywf@hotmail.com";
-    private static String HOST = "smtp.mailgun.org";
+    private static String USER_NAME = "";  // GMail user name (just the part before "@gmail.com")
+    private static String PASSWORD = ""; // GMail password
+    private static String RECIPIENT = "";
+    private static String FROM = "";
+    private static String HOST = "";
     public String message;
     public String [] recipient;
     public String subject;
