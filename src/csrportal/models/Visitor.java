@@ -344,8 +344,8 @@ public class Visitor extends DBModel {
         excel.save();
     }
     
-  public void importFromExcel(){
-        ExcelSheet excel = new ExcelSheet(new File("NewExcelFile.xls"));
+  public void importFromExcel(File excelfile){
+        ExcelSheet excel = new ExcelSheet(excelfile);
         Iterator rowIterator = excel.getSheetRows();
         rowIterator.next();
         while (rowIterator.hasNext())

@@ -27,6 +27,7 @@ import csrportal.views.SettingsForm;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -518,6 +519,30 @@ public class AppController {
         } catch (IOException ex) {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void importVisitors(String filename){
+        File file = new File(filename);
+        Visitor vs = new Visitor();
+        vs.importFromExcel(file);
+    }
+    
+    public void importMessages(String filename){
+        File file = new File(filename);
+        Message msg = new Message();
+        msg.importFromExcel(file);
+    }
+    
+    public void importAppointments(String filename){
+        File file = new File(filename);
+        Appointment app = new Appointment();
+        app.importFromExcel(file);
+    }
+    
+    public void importNotes(String filename){
+        File file = new File(filename);
+        Note nt = new Note();
+        nt.importFromExcel(file);
     }
     
     

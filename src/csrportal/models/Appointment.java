@@ -274,8 +274,8 @@ public class Appointment extends DBModel{
         excel.save();
     }
     
-    public void importFromExcel(){
-        ExcelSheet excel = new ExcelSheet(new File("NewExcelFile.xls"));
+    public void importFromExcel(File excelfile){
+        ExcelSheet excel = new ExcelSheet(excelfile);
         Iterator rowIterator = excel.getSheetRows();
         rowIterator.next();
         while (rowIterator.hasNext())
@@ -288,7 +288,7 @@ public class Appointment extends DBModel{
             app.setAppMeeting(row.getCell(3).getStringCellValue());
             app.setAppEmail(row.getCell(4).getStringCellValue());
             app.setAppContact(row.getCell(5).getStringCellValue());
-            app.setAppDetails(row.getCell(7).getStringCellValue());
+            app.setAppDetails(row.getCell(6).getStringCellValue());
             app.save();
         }
     }
