@@ -8,6 +8,7 @@ package csrportal.models;
 import csrportal.helpers.DBModel;
 import csrportal.helpers.ExcelSheet;
 import csrportal.helpers.SearchQuery;
+import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,9 +17,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
@@ -277,6 +281,11 @@ public class Visitor extends DBModel {
             System.out.println(ex.getMessage());   
         }; 
     }
+    
+    public void save(Object[] attributes){
+        
+        this.save();
+    }
 
     @Override
     public Object[] toTableRow() {
@@ -334,6 +343,33 @@ public class Visitor extends DBModel {
         }
         excel.save();
     }
+    
+  public void importFromExcel(){
+        ExcelSheet excel = new ExcelSheet(new File("NewExcelFile.xls"));
+        Iterator rowIterator = excel.getSheetRows();
+        rowIterator.next();
+        while (rowIterator.hasNext())
+        {
+            Row row=(Row) rowIterator.next();
+            Visitor vs = new Visitor();
+            vs.setFirstName(row.getCell(0).getStringCellValue());
+            vs.setLastName(row.getCell(1).getStringCellValue());
+            vs.setMailingAddress(row.getCell(2).getStringCellValue());
+            vs.setAddress(row.getCell(3).getStringCellValue());
+            vs.setPrimaryContact(row.getCell(4).getStringCellValue());
+            vs.setSecondaryContact(row.getCell(5).getStringCellValue());
+            vs.setReason(row.getCell(6).getStringCellValue());
+            vs.setVisitDate(row.getCell(7).getStringCellValue());
+            vs.setVisitTime(row.getCell(8).getStringCellValue());
+            vs.setAttendingPerson(row.getCell(9).getStringCellValue());
+            vs.setEmail(row.getCell(10).getStringCellValue());
+            vs.save();
+        }
+    }
+    
+    
+    
+    
     
     
 }

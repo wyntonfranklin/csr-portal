@@ -5,6 +5,7 @@
  */
 package csrportal.helpers;
 
+import csrportal.models.Note;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,6 +32,7 @@ public class ExcelSheet{
     private String fileName="NewExcelFile.xls";
     private int rowCounter =0;
     private int totalColumns=0;
+    FileInputStream fileInputStream;
     
     public ExcelSheet(){
         this.workbook = new HSSFWorkbook();
@@ -40,6 +42,22 @@ public class ExcelSheet{
     public ExcelSheet(String sheet){
         this.workbook = new HSSFWorkbook(); 
         this.createSheet(sheet);
+    }
+    
+    public ExcelSheet(File excelsheet){
+        try {
+            fileInputStream=new FileInputStream(excelsheet);
+            this.workbook = new HSSFWorkbook(fileInputStream);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ExcelSheet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ExcelSheet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setSheet(0);
+    }
+    
+    private void setSheet(int value){
+        this.sheet=this.workbook.getSheetAt(value);
     }
     
     
@@ -113,35 +131,27 @@ public class ExcelSheet{
         return this.workbook;
     }
     
+    public Iterator getSheetRows(){
+        return this.sheet.iterator();
+    }
+    
+    
     
     public static void main(String[]args) {
-       try {
-            //Open an excel file as input stream
-            FileInputStream fileInputStream=new FileInputStream(new File("NewExcelFile.xls"));
-            //Get the workbook instance for XLS file
-            //define a workbook
-            HSSFWorkbook hssfWorkbook=new HSSFWorkbook(fileInputStream);
-            //Get first sheet from the workbook
-            HSSFSheet sheet=hssfWorkbook.getSheetAt(0);
-            //Get iterator to all the rows in the current sheet
-            Iterator rowIterator=sheet.iterator();
-            while (rowIterator.hasNext())
-            {
-                Row row=(Row) rowIterator.next();
-                System.out.println("Row Number  "+row.getRowNum());
-                //For each row, iterate through each columns
-                Iterator cellIterator=row.cellIterator();
-                while (cellIterator.hasNext())
-                {
-                    Cell cell=(Cell) cellIterator.next();
-                    System.out.print(cell.getStringCellValue() + ",");
-                }
-                System.out.println("");
-            }
-
-            fileInputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        ExcelSheet excel = new ExcelSheet(new File("NewExcelFile.xls"));
+        excel.setSheet(0);
+        Iterator rowIterator = excel.getSheetRows();
+        rowIterator.next();
+        Note nt = new Note();
+        while (rowIterator.hasNext())
+        {
+            Row row=(Row) rowIterator.next();
+            nt.setNoteContent(row.getCell(0).getStringCellValue());
+            nt.setNoteDate(row.getCell(1).getStringCellValue());
+            nt.setNoteTime(row.getCell(2).getStringCellValue());
+            nt.setTags(row.getCell(3).getStringCellValue());
+            nt.save();
+            System.out.println("/n");
         }
     }
 }

@@ -8,6 +8,7 @@ package csrportal.models;
 import csrportal.helpers.DBModel;
 import csrportal.helpers.ExcelSheet;
 import csrportal.helpers.SearchQuery;
+import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,9 +17,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
@@ -234,6 +237,22 @@ public class Message extends DBModel {
             excel.addRow(rows);
         }
         excel.save();
+    }
+    
+    public void importFromExcel(){
+        ExcelSheet excel = new ExcelSheet(new File("NewExcelFile.xls"));
+        Iterator rowIterator = excel.getSheetRows();
+        rowIterator.next();
+        while (rowIterator.hasNext())
+        {
+            Row row=(Row) rowIterator.next();
+            Message msg = new Message();
+            msg.setMessageFor(row.getCell(0).getStringCellValue());
+            msg.setMessageNote(row.getCell(1).getStringCellValue());
+            msg.setMessageDate(row.getCell(2).getStringCellValue());
+            msg.setMessageTime(row.getCell(3).getStringCellValue());
+            msg.save();
+        }
     }
 
     

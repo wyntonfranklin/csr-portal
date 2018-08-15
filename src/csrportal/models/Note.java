@@ -8,6 +8,7 @@ package csrportal.models;
 import csrportal.helpers.DBModel;
 import csrportal.helpers.ExcelSheet;
 import csrportal.helpers.SearchQuery;
+import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,9 +17,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
@@ -236,6 +239,22 @@ public class Note extends DBModel {
             excel.addRow(rows);
         }
         excel.save();
+    }
+    
+    public void importFromExcel(){
+        ExcelSheet excel = new ExcelSheet(new File("NewExcelFile.xls"));
+        Iterator rowIterator = excel.getSheetRows();
+        rowIterator.next();
+        while (rowIterator.hasNext())
+        {
+            Row row=(Row) rowIterator.next();
+            Note nt = new Note();
+            nt.setNoteContent(row.getCell(0).getStringCellValue());
+            nt.setNoteDate(row.getCell(1).getStringCellValue());
+            nt.setNoteTime(row.getCell(2).getStringCellValue());
+            nt.setTags(row.getCell(3).getStringCellValue());
+            nt.save();
+        }
     }
 
 }

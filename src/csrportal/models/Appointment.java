@@ -8,6 +8,7 @@ package csrportal.models;
 import csrportal.helpers.DBModel;
 import csrportal.helpers.ExcelSheet;
 import csrportal.helpers.SearchQuery;
+import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,9 +17,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
@@ -269,6 +272,25 @@ public class Appointment extends DBModel{
             excel.addRow(rows);
         }
         excel.save();
+    }
+    
+    public void importFromExcel(){
+        ExcelSheet excel = new ExcelSheet(new File("NewExcelFile.xls"));
+        Iterator rowIterator = excel.getSheetRows();
+        rowIterator.next();
+        while (rowIterator.hasNext())
+        {
+            Row row=(Row) rowIterator.next();
+            Appointment app = new Appointment();
+            app.setAppDate(row.getCell(0).getStringCellValue());
+            app.setAppTime(row.getCell(1).getStringCellValue());
+            app.setAppPerson(row.getCell(2).getStringCellValue());
+            app.setAppMeeting(row.getCell(3).getStringCellValue());
+            app.setAppEmail(row.getCell(4).getStringCellValue());
+            app.setAppContact(row.getCell(5).getStringCellValue());
+            app.setAppDetails(row.getCell(7).getStringCellValue());
+            app.save();
+        }
     }
 
     
