@@ -31,17 +31,22 @@ public class Mailer extends Thread  {
     public String message;
     public String [] recipient;
     public String subject;
+    public String user_name;
+    public String password;
+    public String from;
+    public String host;
     
     public Mailer(){
-        
+         AppProperties props = new AppProperties();
+         user_name = props.getUserName();
+         password = props.getPassword();
+         host = props.getHostName();
     }
 
     public static void main(String[] args) {
         String[] to = { RECIPIENT }; // list of recipient email addresses
         String subject = "Java send mail example";
         String body = "Welcome to JavaMail!";
-
-        sendFromGMail(to, subject, body);
     }
 
     public String getMessage() {
@@ -73,18 +78,18 @@ public class Mailer extends Thread  {
         String [] email_to = this.getRecipient();
         String email_subject = this.getSubject();
         String email_body = this.getMessage();
-        Mailer.sendFromGMail(email_to, email_subject, email_body);
+        sendFromGMail(email_to, email_subject, email_body);
     }
     
     
 
-    public static void sendFromGMail( String[] to, String subject, String body) {
+    public void sendFromGMail( String[] to, String subject, String body) {
         Properties props = System.getProperties();
         String host = "smtp.mailgun.org";
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", Mailer.HOST);
-        props.put("mail.smtp.user", Mailer.USER_NAME);
-        props.put("mail.smtp.password", Mailer.PASSWORD );
+        props.put("mail.smtp.host", this.host);
+        props.put("mail.smtp.user", this.user_name);
+        props.put("mail.smtp.password", this.password );
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
 
@@ -92,7 +97,7 @@ public class Mailer extends Thread  {
         MimeMessage message = new MimeMessage(session);
 
         try {
-            message.setFrom(new InternetAddress(Mailer.USER_NAME));
+            message.setFrom(new InternetAddress(this.user_name));
             InternetAddress[] toAddress = new InternetAddress[to.length];
 
             // To get the array of addresses
@@ -107,7 +112,7 @@ public class Mailer extends Thread  {
             message.setSubject(subject);
             message.setText(body);
             Transport transport = session.getTransport("smtp");
-            transport.connect(Mailer.HOST, Mailer.USER_NAME, Mailer.PASSWORD);
+            transport.connect(this.host,this.user_name, this.password);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         }

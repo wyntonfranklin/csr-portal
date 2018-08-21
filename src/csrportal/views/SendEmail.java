@@ -5,6 +5,8 @@
  */
 package csrportal.views;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author shady
@@ -34,12 +36,29 @@ public class SendEmail extends javax.swing.JDialog {
                 String body = messageField.getText();
                 String recipient = toField.getText();
                 String [] to = {recipient};
-                System.out.println(subject);
                 fm.controller.sendMail(to, subject, body);
             }
          
         };
       one.start();
+    }
+    
+    public Boolean validateForm(){
+        Boolean isvalid = false;
+        if(!toField.getText().equals("")){
+            isvalid = true;
+        }
+        return isvalid;
+    }
+    
+    public void sendMessage(){
+        String errorMessage = "Recipient is a required field.";
+        if(this.validateForm()){
+            this.sendEmail();
+            this.setVisible(false);
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);
+        }
     }
     
     
@@ -161,8 +180,7 @@ public class SendEmail extends javax.swing.JDialog {
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         // TODO add your handling code here:
-        this.sendEmail();
-        this.setVisible(false);
+        this.sendMessage();
     }//GEN-LAST:event_sendButtonActionPerformed
 
     /**

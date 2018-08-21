@@ -7,6 +7,7 @@ package csrportal.views;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,6 +41,23 @@ public class ImportForm extends javax.swing.JDialog {
                 fm.controller.importNotes(filePath);
                 break;
             default:
+        }
+    }
+    
+    public Boolean validateForm(){
+        Boolean isvalid = false;
+        if(!fileLocationField.getText().equals("")){
+            isvalid = true;
+        }
+        return isvalid;
+    }
+    
+    public void importExcelSheet(){
+        String errorMessage = "Please selected the file location to import.";
+        if(this.validateForm()){
+            this.importTables();
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);
         }
     }
     
@@ -180,7 +198,7 @@ public class ImportForm extends javax.swing.JDialog {
 
     private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
         // TODO add your handling code here:
-        this.importTables();
+        this.importExcelSheet();
     }//GEN-LAST:event_importButtonActionPerformed
 
     /**
