@@ -212,7 +212,6 @@ public class Note extends DBModel {
         SearchQuery sq = new SearchQuery();
         sq.likeQuery("note", value, SearchQuery.OP_OR);
         sq.likeQuery("tags", value, SearchQuery.OP_OR);
-        System.out.println(sq.getSearchQuery());
         return sq.getSearchQuery();
     }
 

@@ -5,6 +5,8 @@
  */
 package csrportal.views;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author shady
@@ -22,6 +24,24 @@ public class SearchForm extends javax.swing.JDialog {
     public void searchCurrentTable(){
         HomeFrame fm = (HomeFrame)(this.getParent());
         fm.controller.searchTable(searchInput.getText());  
+    }
+    
+    public Boolean validateForm(){
+        Boolean isvalid = false;
+        if(!searchInput.getText().equals("")){
+            isvalid = true;
+        }
+        return isvalid;
+    }
+    
+    public void search(){
+        String errorMessage = "Please enter a search query";
+        if( this.validateForm() ){
+            this.searchCurrentTable();
+            this.setVisible(false); 
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);  
+        }
     }
 
     /**
@@ -122,8 +142,7 @@ public class SearchForm extends javax.swing.JDialog {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
         //this.getParent()
-        this.searchCurrentTable();
-        this.setVisible(false);
+        this.search();
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed

@@ -239,7 +239,6 @@ public class AppController {
     
     public void editVisitor(int Id ){
         Visitor vs = findVisitor(Id);
-        System.out.println(vs.getFullName());
         VisitorForm vePopup = new VisitorForm(getFrame(), true, vs);
         vePopup.setLocationRelativeTo(null);
         vePopup.setTitle("Visitor Details");

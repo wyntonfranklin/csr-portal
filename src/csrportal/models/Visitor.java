@@ -306,7 +306,6 @@ public class Visitor extends DBModel {
         sq.likeQuery("email", value, SearchQuery.OP_OR);
         sq.likeQuery("reason", value, SearchQuery.OP_OR);
         sq.likeQuery("address", value, SearchQuery.OP_OR);
-        System.out.println(sq.getSearchQuery());
         return sq.getSearchQuery();
     }
     

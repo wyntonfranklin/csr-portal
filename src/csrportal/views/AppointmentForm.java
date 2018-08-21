@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
@@ -112,6 +113,26 @@ public class AppointmentForm extends javax.swing.JDialog {
         app.setAppContact(contactField.getText());
         app.setAppDetails(detailsField.getText());
         app.save();
+    }
+    
+    public Boolean validateForm(){
+        Boolean isvalid = false;
+        if(!personField.getText().equals("")
+                && !meetingField.getText().equals("")){
+            isvalid = true;
+        }
+        return isvalid;
+    }
+    
+    public void saveForm(){
+        String errorMessage = "Person and Meeting fields are required.";
+        if( this.validateForm() ){
+            saveAppointment();
+            mainApp.refreshTable();
+            this.setVisible(false);
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);
+        }
     }
     
 
@@ -288,9 +309,7 @@ public class AppointmentForm extends javax.swing.JDialog {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        saveAppointment();
-        mainApp.refreshTable();
-        this.setVisible(false);
+        this.saveForm();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

@@ -240,7 +240,6 @@ public class Appointment extends DBModel{
         sq.likeQuery("contact_email", value, SearchQuery.OP_OR);
         sq.likeQuery("contact_phone", value, SearchQuery.OP_OR);
         sq.likeQuery("reason", value, SearchQuery.OP_OR);
-        System.out.println(sq.getSearchQuery());
         return sq.getSearchQuery();
     }
     

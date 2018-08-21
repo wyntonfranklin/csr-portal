@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
@@ -111,6 +112,26 @@ public class MessageForm extends javax.swing.JDialog {
         msg.setMessageFor(forField.getText());
         msg.save();
         
+    }
+    
+    public Boolean validateForm(){
+        Boolean isvalid = false;
+        if(!messageField.getText().equals("")
+                && !forField.getText().equals("")){
+            isvalid = true;
+        }
+        return isvalid;
+    }
+    
+    public void saveForm(){
+        String errorMessage = "Message For and Message Details are required fields.";
+        if( this.validateForm() ){
+            saveMessage();
+            this.setVisible(false);
+            app.refreshTable();
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);
+        }
     }
 
     /**
@@ -256,9 +277,7 @@ public class MessageForm extends javax.swing.JDialog {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        saveMessage();
-        this.setVisible(false);
-        app.refreshTable();
+       this.saveForm();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

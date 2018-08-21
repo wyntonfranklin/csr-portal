@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,6 +58,26 @@ public class NoteForm extends javax.swing.JDialog {
         SimpleDateFormat format = new SimpleDateFormat(NoteForm.TIME_FORMAT);
         return format.format(Calendar.getInstance().getTime());
     }
+    
+    public Boolean validateForm(){
+        Boolean isvalid = false;
+        if(!noteField.getText().equals("")){
+            isvalid = true;
+        }
+        return isvalid;
+    }
+    
+    public void saveForm(){
+        String errorMessage = "Note is a required Field";
+        if( this.validateForm() ){
+            this.save();
+            mainApp.refreshTable();
+            this.setVisible(false);
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);
+        }
+    }
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -156,9 +177,7 @@ public class NoteForm extends javax.swing.JDialog {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        this.save();
-        mainApp.refreshTable();
-        this.setVisible(false);
+       this.saveForm();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

@@ -210,7 +210,6 @@ public class Message extends DBModel {
         SearchQuery sq = new SearchQuery();
         sq.likeQuery("message_for", value, SearchQuery.OP_OR);
         sq.likeQuery("note", value, SearchQuery.OP_OR);
-        System.out.println(sq.getSearchQuery());
         return sq.getSearchQuery();
     }
     

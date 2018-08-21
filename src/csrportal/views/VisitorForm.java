@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
@@ -135,6 +136,27 @@ public class VisitorForm extends javax.swing.JDialog {
            strDate = Calendar.getInstance().getTime();
         }
         visitDateField.setDate(strDate);
+    }
+    
+    public Boolean validateForm(){
+        Boolean isvalid = false;
+        if(!fnField.getText().equals("") 
+                && !lnField.getText().equals("")
+                && !personField.getText().equals("")){
+            isvalid = true;
+        }
+        return isvalid;
+    }
+    
+    public void saveForm(){
+        String errorMessage ="First Name, Last Name and Person Visiting are required fields";
+        if(this.validateForm()){
+            this.saveVisitor();
+            this.setVisible(false);
+            app.refreshTable();   
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);
+        } 
     }
 
     /**
@@ -351,10 +373,7 @@ public class VisitorForm extends javax.swing.JDialog {
 
     private void saveFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFormActionPerformed
         // TODO add your handling code here:
-        this.saveVisitor();
-        this.setVisible(false);
-        app.refreshTable();
-        
+       this.saveForm();
     }//GEN-LAST:event_saveFormActionPerformed
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
