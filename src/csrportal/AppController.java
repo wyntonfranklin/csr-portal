@@ -544,6 +544,44 @@ public class AppController {
         nt.importFromExcel(file);
     }
     
+    public void exportSelectedMessages(List<Integer> ids, String filename){
+        Message msg = new Message();
+        try {
+            msg.saveToExcel(ids, filename);
+        } catch (IOException ex) {
+            Logger.getLogger(HomeFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void exportSelectedVisitors(List<Integer>ids, String filename){
+        Visitor vs = new Visitor();
+        try{
+            vs.saveToExcel(ids, filename);
+        }catch (IOException ex) {
+            Logger.getLogger(HomeFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void exportSelectedNotes(List<Integer>ids, String filename){
+        Note note = new Note();
+        try{
+            note.saveToExcel(ids, filename);
+        }catch (IOException ex) {
+            Logger.getLogger(HomeFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void exportSelectedAppointments(List<Integer>ids, String filename){
+        Appointment app = new Appointment();
+        try{
+            app.saveToExcel(ids, filename);
+        }catch (IOException ex) {
+            Logger.getLogger(HomeFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
     
     
     

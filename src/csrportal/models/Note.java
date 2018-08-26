@@ -240,6 +240,25 @@ public class Note extends DBModel {
         excel.save();
     }
     
+    public void saveToExcel(List<Integer> values, String filename) throws IOException{
+        String [] header = this.getColumns();
+        ExcelSheet excel = new ExcelSheet();
+        excel.setHeader(header);
+        excel.setFileName(filename);
+        for(int i =0; i<=values.size()-1; i++){
+            Note note = new Note();
+            note.findByPk(values.get(i));
+            String[] rows ={
+                note.getNoteContent(),
+                note.getNoteDate(),
+                note.getNoteTime(),
+                note.getTags()
+            };
+            excel.addRow(rows);
+        }
+        excel.save();
+    }
+    
     public void importFromExcel(File excelfile){
         ExcelSheet excel = new ExcelSheet(excelfile);
         Iterator rowIterator = excel.getSheetRows();

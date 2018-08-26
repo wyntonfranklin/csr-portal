@@ -343,6 +343,32 @@ public class Visitor extends DBModel {
         excel.save();
     }
     
+    public void saveToExcel(List<Integer> values, String filename) throws IOException{
+        String [] header = this.getColumns();
+        ExcelSheet excel = new ExcelSheet();
+        excel.setHeader(header);
+        excel.setFileName(filename);
+        for(int i =0; i<=values.size()-1; i++){
+            Visitor visitor = new Visitor();
+            visitor.findByPk(values.get(i));
+            String[] rows = {
+                 visitor.getFirstName(),
+                 visitor.getLastName(),
+                 visitor.getMailingAddress(),
+                 visitor.getAddress(),
+                 visitor.getPrimaryContact(),
+                 visitor.getSecondaryContact(),
+                 visitor.getReason(),
+                 visitor.getVisitDate(),
+                 visitor.getVisitTime(),
+                 visitor.getAttendingPerson(),
+                 visitor.getEmail()
+            };
+            excel.addRow(rows);
+        }
+        excel.save();
+    }
+    
   public void importFromExcel(File excelfile){
         ExcelSheet excel = new ExcelSheet(excelfile);
         Iterator rowIterator = excel.getSheetRows();

@@ -238,6 +238,25 @@ public class Message extends DBModel {
         excel.save();
     }
     
+    public void saveToExcel(List<Integer> values, String filename) throws IOException{
+        String [] header = this.getColumns();
+        ExcelSheet excel = new ExcelSheet();
+        excel.setHeader(header);
+        excel.setFileName(filename);
+        for(int i =0; i<=values.size()-1; i++){
+            Message message = new Message();
+            message.findByPk(values.get(i));
+               String[] rows ={
+                message.getMessageFor(),
+                message.getMessageNote(),
+                message.getMessageDate(),
+                message.getMessageTime()
+            };
+            excel.addRow(rows);
+        }
+        excel.save();   
+    }
+    
     public void importFromExcel(File excelfile){
         ExcelSheet excel = new ExcelSheet(excelfile);
         Iterator rowIterator = excel.getSheetRows();

@@ -273,6 +273,29 @@ public class Appointment extends DBModel{
         excel.save();
     }
     
+    public void saveToExcel(List<Integer> values, String filename) throws IOException{
+        String [] header = this.getColumns();
+        ExcelSheet excel = new ExcelSheet();
+        excel.setHeader(header);
+        excel.setFileName(filename);
+        List<Appointment> app = this.findAll();
+        for(int i =0; i<=values.size()-1; i++){
+            Appointment appointment = new Appointment();
+            appointment.findByPk(values.get(i));
+            String[] rows ={
+                appointment.getAppDate(),
+                appointment.getAppTime(),
+                appointment.getAppPerson(),
+                appointment.getAppMeeting(),
+                appointment.getAppEmail(),
+                appointment.getAppContact(),
+                appointment.getAppDetails()
+            };
+            excel.addRow(rows);
+        }
+        excel.save();
+    }
+    
     public void importFromExcel(File excelfile){
         ExcelSheet excel = new ExcelSheet(excelfile);
         Iterator rowIterator = excel.getSheetRows();
