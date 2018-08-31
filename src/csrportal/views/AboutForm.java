@@ -54,7 +54,7 @@ public class AboutForm extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         aboutField.setEditable(false);
-        aboutField.setText("Create by wynton franklin\n\nVersion 1.0");
+        aboutField.setText("Created by Wynton Franklin\n\nVersion 1.0");
         jScrollPane2.setViewportView(aboutField);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

@@ -11,6 +11,7 @@ import csrportal.models.Visitor;
 import csrportal.helpers.TableWidget;
 import csrportal.models.Message;
 import csrportal.models.Note;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
@@ -250,6 +252,21 @@ public class HomeFrame extends javax.swing.JFrame {
        return visitorsTable;
     }
     
+    public String getCurrentTableName(){
+        switch (currentTab) {
+            case 0:
+                return "Visitors";
+            case 1:
+                return "Messages";
+            case 2:
+                return "Appointments";
+            case 3:
+                return "Notes";
+            default:
+                return "table";
+        }
+    }
+    
     public void editTable(){
         int index = this.getCurrentSelectedRow();
         int modelId = Integer.valueOf(this.getCurrentTable().getModel().getValueAt(index, 0).toString());
@@ -327,13 +344,29 @@ public class HomeFrame extends javax.swing.JFrame {
                 System.out.println(id);
                 myList.add(id);
             }
-            this.exportSelection(myList, "msg.xls");   
+            this.exportSelection(myList, this.getExportPath());   
         }else{
             JOptionPane.showMessageDialog(null, errorMessage);   
         }
     }
     
+    public String getExportPath(){
+        final JFileChooser fc = new JFileChooser();
+        String fileName = this.getCurrentTableName() + "_sample.xls";
+        fc.setSelectedFile(new File(this.getCurrentTableName() + "_sample.xls"));
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            //This is where a real application would open the file.
+            System.out.println(file.getAbsoluteFile());
+            return file.getAbsolutePath();
+        } else {
+            return fileName;
+        } 
+    }
+    
     public void exportSelection(List<Integer>ids, String filename){
+        String successMessage = "Selection successfully exported.";
         switch (currentTab) {
             case 0:
                 this.controller.exportSelectedVisitors(ids, filename);
@@ -349,6 +382,7 @@ public class HomeFrame extends javax.swing.JFrame {
                 break;
             default:
         }
+        JOptionPane.showMessageDialog(null, successMessage); 
     }
     
     
@@ -367,7 +401,6 @@ public class HomeFrame extends javax.swing.JFrame {
         editMenuItem = new javax.swing.JMenuItem();
         rightCopyMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
-        jPanel2 = new javax.swing.JPanel();
         calendarView = new org.jdesktop.swingx.JXDatePicker();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -444,19 +477,6 @@ public class HomeFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(491, 1013));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         calendarView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 calendarViewMouseClicked(evt);
@@ -495,7 +515,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
@@ -529,7 +549,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
@@ -563,7 +583,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+            .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
@@ -597,7 +617,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
@@ -644,7 +664,7 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
 
-        sendEmailButton.setIcon(new javax.swing.ImageIcon("/home/shady/Downloads/Email-32.png")); // NOI18N
+        sendEmailButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Email-32.png"))); // NOI18N
         sendEmailButton.setToolTipText("Send Email");
         sendEmailButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -652,7 +672,7 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
 
-        searchButton.setIcon(new javax.swing.ImageIcon("/home/shady/Downloads/Search-32.png")); // NOI18N
+        searchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Search-32.png"))); // NOI18N
         searchButton.setToolTipText("Search");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -773,7 +793,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jMenu4.setText("Help");
 
-        contentMenuItem.setText("Content");
+        contentMenuItem.setText("Help Contents");
         contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contentMenuItemActionPerformed(evt);
@@ -808,9 +828,8 @@ public class HomeFrame extends javax.swing.JFrame {
                             .addComponent(calendarView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTabbedPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(12, 12, 12)))
+                .addGap(1, 1, 1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -826,8 +845,7 @@ public class HomeFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
 
         pack();
@@ -1039,7 +1057,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -1056,7 +1073,7 @@ public class HomeFrame extends javax.swing.JFrame {
     public javax.swing.JTable noteTable;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JMenuItem rightCopyMenuItem;
-    private javax.swing.JScrollPane scorllPane1;
+    public javax.swing.JScrollPane scorllPane1;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JTextField searchField1;

@@ -6,7 +6,7 @@
 <entry key="password">ed03d08a7acf210ddc17869f05aedb88</entry>
 <entry key="isAppLoaded">true</entry>
 <entry key="host">smtp.mailgun.org</entry>
-<entry key="dbFile">/home/shady/NetBeansProjects/CsrPortal/csr.db</entry>
+<entry key="dbFile">csr.db</entry>
 <entry key="defaultDate">yyyy-MM-dd</entry>
 <entry key="username">postmaster@sandbox724a2b1a33f547798d87fbb228859a98.mailgun.org</entry>
 </properties>

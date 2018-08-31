@@ -37,7 +37,7 @@ public class ContentForm extends javax.swing.JDialog {
         jTextArea1.setColumns(20);
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
-        jTextArea1.setText("CSR manager allows Customer service representatives to manage the customers they view on a daily basis");
+        jTextArea1.setText("Nothing to show here. Its a simple app");
         jTextArea1.setWrapStyleWord(true);
         jScrollPane1.setViewportView(jTextArea1);
 

@@ -142,7 +142,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="contentMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Content"/>
+                <Property name="text" type="java.lang.String" value="Help Contents"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contentMenuItemActionPerformed"/>
@@ -196,11 +196,10 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTabbedPane1" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel2" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -220,33 +219,12 @@
                       <Component id="jScrollPane1" min="-2" pref="463" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jPanel2" pref="923" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel2">
-      <Properties>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[491, 1013]"/>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-    </Container>
     <Component class="org.jdesktop.swingx.JXDatePicker" name="calendarView">
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="calendarViewMouseClicked"/>
@@ -302,7 +280,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane2" pref="652" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" pref="657" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -365,7 +343,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane3" alignment="0" pref="652" max="32767" attributes="0"/>
+                  <Component id="jScrollPane3" alignment="0" pref="657" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -433,7 +411,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scorllPane1" alignment="0" pref="652" max="32767" attributes="0"/>
+                  <Component id="scorllPane1" alignment="0" pref="657" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
@@ -502,7 +480,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane4" pref="652" max="32767" attributes="0"/>
+                  <Component id="jScrollPane4" pref="657" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
@@ -633,7 +611,7 @@
         <Component class="javax.swing.JButton" name="sendEmailButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/home/shady/Downloads/Email-32.png"/>
+              <Image iconType="3" name="/icons/Email-32.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Send Email"/>
           </Properties>
@@ -644,7 +622,7 @@
         <Component class="javax.swing.JButton" name="searchButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/home/shady/Downloads/Search-32.png"/>
+              <Image iconType="3" name="/icons/Search-32.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Search"/>
           </Properties>
