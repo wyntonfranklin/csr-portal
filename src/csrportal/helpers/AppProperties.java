@@ -22,9 +22,9 @@ public class AppProperties {
     public String defaultDate="yyyy-MM-dd";
     public String defaultTime="hh:mm a";
     public String isAppLoaded ="false";
-    public String hostName="smtp.mailgun.org";
-    public String userName="postmaster@sandbox724a2b1a33f547798d87fbb228859a98.mailgun.org";
-    public String password="ed03d08a7acf210ddc17869f05aedb88";
+    public String hostName="";
+    public String userName="";
+    public String password="";
     public String fileLocation = "csr.db";
     
     
@@ -146,9 +146,9 @@ public class AppProperties {
     
     public void resetDefaults(){
         AppProperties nProp = new AppProperties();
-        nProp.setHostName("smtp.mailgun.org");
-        nProp.setPassword("ed03d08a7acf210ddc17869f05aedb88");
-        nProp.setUserName("postmaster@sandbox724a2b1a33f547798d87fbb228859a98.mailgun.org");
+        nProp.setHostName("");
+        nProp.setPassword("");
+        nProp.setUserName("");
         nProp.setFileLocation("csr.db");
         nProp.save();
     }

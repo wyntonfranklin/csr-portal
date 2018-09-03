@@ -7,6 +7,7 @@ package csrportal.views;
 
 import csrportal.AppController;
 import csrportal.PortalCalendar;
+import csrportal.helpers.AppProperties;
 import csrportal.models.Visitor;
 import csrportal.helpers.TableWidget;
 import csrportal.models.Message;
@@ -209,7 +210,25 @@ public class HomeFrame extends javax.swing.JFrame {
     }
     
     public void onSendEmailButtonPressed(){
-        controller.openSendEmail();
+        String errorMessage ="Mail is not setup.";
+        if(this.mailSetup()){
+            controller.openSendEmail();  
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);
+        }
+    }
+    
+    public Boolean mailSetup(){
+        Boolean istrue = false;
+        AppProperties props = new AppProperties();
+        String user_name = props.getUserName();
+        String password = props.getPassword();
+        String host = props.getHostName();
+        if(!user_name.isEmpty() && !password.isEmpty()
+                && !host.isEmpty() ){
+            istrue = true;
+        }
+        return istrue;
     }
     
     public void onSearchButtonPressend(){
@@ -707,6 +726,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Add-icon.png"))); // NOI18N
         jMenu3.setText("New");
 
         jMenuItem1.setText("Add Visitor");
@@ -743,6 +763,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jMenu1.add(jMenu3);
 
+        importMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/MS-Office-2003-Excel-icon.png"))); // NOI18N
         importMenuItem.setText("Import");
         importMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -751,6 +772,7 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         jMenu1.add(importMenuItem);
 
+        exportMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/MS-Office-2003-Excel-icon.png"))); // NOI18N
         exportMenuItem.setText("Export");
         exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -760,6 +782,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenu1.add(exportMenuItem);
         jMenu1.add(jSeparator2);
 
+        quitMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Close-icon.png"))); // NOI18N
         quitMenuItem.setText("Quit");
         quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -772,6 +795,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
+        copyMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/copy-icon.png"))); // NOI18N
         copyMenuItem.setText("Copy");
         copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -781,6 +805,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenu2.add(copyMenuItem);
         jMenu2.add(jSeparator1);
 
+        settingsMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Gear-icon.png"))); // NOI18N
         settingsMenuItem.setText("Preferences");
         settingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -793,6 +818,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jMenu4.setText("Help");
 
+        contentMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Help-icon.png"))); // NOI18N
         contentMenuItem.setText("Help Contents");
         contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -801,6 +827,7 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         jMenu4.add(contentMenuItem);
 
+        aboutMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Info-icon.png"))); // NOI18N
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
