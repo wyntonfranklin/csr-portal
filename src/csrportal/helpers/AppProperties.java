@@ -8,6 +8,11 @@ package csrportal.helpers;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +31,7 @@ public class AppProperties {
     public String userName="";
     public String password="";
     public String fileLocation = "csr.db";
+    public Date lastDate;
     
     
     
@@ -36,6 +42,37 @@ public class AppProperties {
     
     public void init(){
         this.loadAttributes();
+    }
+
+    public Date getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(Date lastDate) {
+        this.lastDate = lastDate;
+    }
+    
+    public String getLastDateAsString(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        if(this.getLastDate() == null ){
+            Date date = Calendar.getInstance().getTime();
+            return format.format(date);
+        }
+        return format.format(this.getLastDate());
+    }
+    
+    public void setLastDate(String date){
+        if(date == null ){
+            date = Calendar.getInstance().getTime().toString();
+        }
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date strDate=null;
+        try {
+            strDate = dateFormat.parse(date);
+        } catch (ParseException ex) {
+           strDate = Calendar.getInstance().getTime();
+        }
+        this.lastDate = strDate;
     }
 
     public String getDefaultDate() {
@@ -117,7 +154,10 @@ public class AppProperties {
          getProperties().setProperty("username", this.getUserName());
          getProperties().setProperty("password",this.getPassword());
          getProperties().setProperty("dbFile",this.getFileLocation());
+         getProperties().setProperty("lastDate",this.getLastDateAsString());
     }
+    
+    
     
     public String getProperty(String value){
         try {
@@ -142,6 +182,7 @@ public class AppProperties {
         this.setUserName(getProperties().getProperty("username"));
         this.setHostName(getProperties().getProperty("host"));
         this.setFileLocation(getProperties().getProperty("dbFile"));
+        this.setLastDate(getProperties().getProperty("lastDate"));
     }
     
     public void resetDefaults(){

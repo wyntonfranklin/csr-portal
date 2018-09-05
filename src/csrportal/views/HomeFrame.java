@@ -52,10 +52,13 @@ public class HomeFrame extends javax.swing.JFrame {
     
     public AppController controller;
     
+    AppProperties settings;
+    
     
     public HomeFrame() {
         initComponents();
         controller = new AppController(this);
+        settings = new AppProperties();
         initFunctions();
     }
  
@@ -64,7 +67,7 @@ public class HomeFrame extends javax.swing.JFrame {
         pc = new PortalCalendar();
         pc.setCalendarWeek(Calendar.getInstance().getTime());
         setWeekDays();
-        setSelectedDay(pc.getCurrentDate());
+        setSelectedDay(settings.getLastDate());
         addTabbedChangedListener();
     }
     
@@ -181,6 +184,8 @@ public class HomeFrame extends javax.swing.JFrame {
         pc.setCalendarWeek(calendarView.getDate());   
         DaysList.setSelectedIndex(pc.currentWeekDay(calendarView.getDate())-1);
         this.refreshTable();
+        settings.setLastDate(calendarView.getDate());
+        settings.save();
     }
     
     
@@ -419,6 +424,7 @@ public class HomeFrame extends javax.swing.JFrame {
         tableMenu = new javax.swing.JPopupMenu();
         editMenuItem = new javax.swing.JMenuItem();
         rightCopyMenuItem = new javax.swing.JMenuItem();
+        rightSendAsEmail = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         calendarView = new org.jdesktop.swingx.JXDatePicker();
         jLabel1 = new javax.swing.JLabel();
@@ -451,6 +457,7 @@ public class HomeFrame extends javax.swing.JFrame {
         todayButton = new javax.swing.JButton();
         sendEmailButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -470,6 +477,7 @@ public class HomeFrame extends javax.swing.JFrame {
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
+        editMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Actions-document-edit-icon.png"))); // NOI18N
         editMenuItem.setText("Edit");
         editMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -478,6 +486,7 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         tableMenu.add(editMenuItem);
 
+        rightCopyMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/copy-icon.png"))); // NOI18N
         rightCopyMenuItem.setText("Copy");
         rightCopyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -486,6 +495,16 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         tableMenu.add(rightCopyMenuItem);
 
+        rightSendAsEmail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/62888-envelope-icon.png"))); // NOI18N
+        rightSendAsEmail.setText("Send as Email");
+        rightSendAsEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightSendAsEmailActionPerformed(evt);
+            }
+        });
+        tableMenu.add(rightSendAsEmail);
+
+        deleteMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Close-icon.png"))); // NOI18N
         deleteMenuItem.setText("Delete");
         deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -512,6 +531,7 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calendar-icon_16.png"))); // NOI18N
         jLabel1.setText("Days of the Week");
 
         DaysList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -550,10 +570,10 @@ public class HomeFrame extends javax.swing.JFrame {
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Visitors", null, jPanel4, "");
+        jTabbedPane1.addTab("Visitors", new javax.swing.ImageIcon(getClass().getResource("/icons/User-Group-icon.png")), jPanel4, ""); // NOI18N
 
         messageTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -584,10 +604,10 @@ public class HomeFrame extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(searchField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Messages", jPanel5);
+        jTabbedPane1.addTab("Messages", new javax.swing.ImageIcon(getClass().getResource("/icons/message-already-read-icon.png")), jPanel5); // NOI18N
 
         appointmentTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -618,10 +638,10 @@ public class HomeFrame extends javax.swing.JFrame {
                     .addComponent(searchField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE))
+                .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Appointments", jPanel6);
+        jTabbedPane1.addTab("Appointments", new javax.swing.ImageIcon(getClass().getResource("/icons/Calendar-icon_16.png")), jPanel6); // NOI18N
 
         noteTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -652,14 +672,15 @@ public class HomeFrame extends javax.swing.JFrame {
                     .addComponent(searchField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Notes", jPanel7);
+        jTabbedPane1.addTab("Notes", new javax.swing.ImageIcon(getClass().getResource("/icons/Notepad-icon.png")), jPanel7); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         exportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Excel_32.png"))); // NOI18N
+        exportButton.setToolTipText("Export Rows");
         exportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportButtonActionPerformed(evt);
@@ -699,6 +720,9 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Trash-can-icon.png"))); // NOI18N
+        jButton1.setToolTipText("Delete Rows");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -713,15 +737,18 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(addNewButton, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+            .addComponent(addNewButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(todayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(sendEmailButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(searchButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
@@ -729,6 +756,7 @@ public class HomeFrame extends javax.swing.JFrame {
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Add-icon.png"))); // NOI18N
         jMenu3.setText("New");
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/User-Group-icon.png"))); // NOI18N
         jMenuItem1.setText("Add Visitor");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -737,6 +765,7 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem1);
 
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/message-already-read-icon.png"))); // NOI18N
         jMenuItem2.setText("Add Message");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -745,6 +774,7 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem2);
 
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Calendar-icon_16.png"))); // NOI18N
         jMenuItem3.setText("Add Appointment");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -753,6 +783,7 @@ public class HomeFrame extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem3);
 
+        noteMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Notepad-icon.png"))); // NOI18N
         noteMenuItem.setText("Add Note");
         noteMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1021,6 +1052,11 @@ public class HomeFrame extends javax.swing.JFrame {
         this.exportCurrentSelection();
     }//GEN-LAST:event_exportButtonActionPerformed
 
+    private void rightSendAsEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightSendAsEmailActionPerformed
+        // TODO add your handling code here:
+        onSendEmailButtonPressed();
+    }//GEN-LAST:event_rightSendAsEmailActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1070,6 +1106,7 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JButton exportButton;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenuItem importMenuItem;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1100,6 +1137,7 @@ public class HomeFrame extends javax.swing.JFrame {
     public javax.swing.JTable noteTable;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JMenuItem rightCopyMenuItem;
+    private javax.swing.JMenuItem rightSendAsEmail;
     public javax.swing.JScrollPane scorllPane1;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
