@@ -3,8 +3,8 @@
 <properties>
 <comment/>
 <entry key="defaultTime">hh:mm a</entry>
+<entry key="lastDate">2018-09-06</entry>
 <entry key="password"/>
-<entry key="lastDate">2018-09-03</entry>
 <entry key="isAppLoaded">true</entry>
 <entry key="host"/>
 <entry key="dbFile">csr.db</entry>

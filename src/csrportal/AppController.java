@@ -580,6 +580,29 @@ public class AppController {
         }
     }
     
+    public void deleteByModel(int modelId){
+        int currentTab = getFrame().getCurrentTab();
+        switch (currentTab) {
+            case 0:
+                Visitor vs = new Visitor();
+                vs.deleteByPk(modelId);
+                break;
+            case 1:
+                Message message = new Message();
+                message.deleteByPk(modelId);
+                break;
+            case 2:
+                Appointment app = new Appointment();
+                app.deleteByPk(modelId);
+                break;
+            case 3:
+                Note nt = new Note();
+                nt.deleteByPk(modelId);
+            default:
+                break;
+        }     
+    }
+    
     
     
     

@@ -10,6 +10,7 @@ import csrportal.PortalCalendar;
 import csrportal.helpers.AppProperties;
 import csrportal.models.Visitor;
 import csrportal.helpers.TableWidget;
+import csrportal.models.Appointment;
 import csrportal.models.Message;
 import csrportal.models.Note;
 import java.io.File;
@@ -374,6 +375,34 @@ public class HomeFrame extends javax.swing.JFrame {
         }
     }
     
+    public Boolean validateDeleteAction(){
+        Boolean istrue=false;
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog (this, "Would you like delete all the selected records.","Warning",dialogButton);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            istrue = true;
+        }
+        return istrue;
+    }
+    
+    public void deleteCurrentSelection(){
+        int [] rows = this.getCurrentTable().getSelectedRows();
+        String errorMessage ="No rows selected.";
+        if(rows.length>0){
+            if(this.validateDeleteAction()){
+                List<Integer> myList = new ArrayList<>();
+                for(int i = 0; i < rows.length; i++){
+                    int id =  Integer.valueOf(this.getCurrentTable().getModel().getValueAt(rows[i], 0).toString());
+                    this.controller.deleteByModel(id);
+                }
+                this.refreshTable();   
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, errorMessage);   
+        }
+    }
+   
+    
     public String getExportPath(){
         final JFileChooser fc = new JFileChooser();
         String fileName = this.getCurrentTableName() + "_sample.xls";
@@ -436,28 +465,32 @@ public class HomeFrame extends javax.swing.JFrame {
         visitorsTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         searchField = new javax.swing.JTextField();
+        quickAddVisitor = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         messageTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         searchField1 = new javax.swing.JTextField();
+        quickAddMessage = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         scorllPane1 = new javax.swing.JScrollPane();
         appointmentTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         searchField2 = new javax.swing.JTextField();
+        quickAppButton = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         noteTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         searchField3 = new javax.swing.JTextField();
+        quickNoteButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         exportButton = new javax.swing.JButton();
         addNewButton = new javax.swing.JButton();
         todayButton = new javax.swing.JButton();
         sendEmailButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        deleteAllButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -550,27 +583,36 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Search this Table:");
 
+        quickAddVisitor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Add-icon.png"))); // NOI18N
+        quickAddVisitor.setText("New");
+        quickAddVisitor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quickAddVisitorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(quickAddVisitor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchField)
-                .addContainerGap())
+                .addComponent(searchField))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(5, 5, 5)
+                .addGap(3, 3, 3)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(quickAddVisitor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Visitors", new javax.swing.ImageIcon(getClass().getResource("/icons/User-Group-icon.png")), jPanel4, ""); // NOI18N
@@ -584,13 +626,23 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Search this Table:");
 
+        quickAddMessage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Add-icon.png"))); // NOI18N
+        quickAddMessage.setText("New");
+        quickAddMessage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quickAddMessageActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(quickAddMessage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchField1)
@@ -599,12 +651,13 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
+                .addGap(2, 2, 2)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(searchField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(quickAddMessage))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Messages", new javax.swing.ImageIcon(getClass().getResource("/icons/message-already-read-icon.png")), jPanel5); // NOI18N
@@ -618,13 +671,23 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Search this Table:");
 
+        quickAppButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Add-icon.png"))); // NOI18N
+        quickAppButton.setText("New");
+        quickAppButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quickAppButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(quickAppButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchField2)
@@ -633,12 +696,13 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
+                .addGap(2, 2, 2)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(quickAppButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE))
+                .addComponent(scorllPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Appointments", new javax.swing.ImageIcon(getClass().getResource("/icons/Calendar-icon_16.png")), jPanel6); // NOI18N
@@ -652,13 +716,23 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jLabel5.setText("Search this Table:");
 
+        quickNoteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Button-Add-icon.png"))); // NOI18N
+        quickNoteButton.setText("New");
+        quickNoteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quickNoteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(quickNoteButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchField3)
@@ -667,12 +741,13 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
+                .addGap(2, 2, 2)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(quickNoteButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Notes", new javax.swing.ImageIcon(getClass().getResource("/icons/Notepad-icon.png")), jPanel7); // NOI18N
@@ -720,8 +795,13 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Trash-can-icon.png"))); // NOI18N
-        jButton1.setToolTipText("Delete Rows");
+        deleteAllButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Trash-can-icon.png"))); // NOI18N
+        deleteAllButton.setToolTipText("Delete Rows");
+        deleteAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteAllButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -738,7 +818,7 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(deleteAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -748,7 +828,7 @@ public class HomeFrame extends javax.swing.JFrame {
             .addComponent(sendEmailButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(searchButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(deleteAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
@@ -911,7 +991,10 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void addNewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewButtonActionPerformed
         // TODO add your handling code here:
-        onAddButtonPressed();
+        AddItemForm addItemForm = new AddItemForm(this,true,controller);
+        addItemForm.setTitle("Add Item");
+        addItemForm.setLocationRelativeTo(null);
+        addItemForm.setVisible(true);
     }//GEN-LAST:event_addNewButtonActionPerformed
 
     private void DaysListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DaysListMouseClicked
@@ -1057,6 +1140,31 @@ public class HomeFrame extends javax.swing.JFrame {
         onSendEmailButtonPressed();
     }//GEN-LAST:event_rightSendAsEmailActionPerformed
 
+    private void deleteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAllButtonActionPerformed
+        // TODO add your handling code here:
+        this.deleteCurrentSelection();
+    }//GEN-LAST:event_deleteAllButtonActionPerformed
+
+    private void quickAddVisitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickAddVisitorActionPerformed
+        // TODO add your handling code here:
+        onAddButtonPressed();
+    }//GEN-LAST:event_quickAddVisitorActionPerformed
+
+    private void quickAddMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickAddMessageActionPerformed
+        // TODO add your handling code here:
+        onAddButtonPressed();
+    }//GEN-LAST:event_quickAddMessageActionPerformed
+
+    private void quickAppButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickAppButtonActionPerformed
+        // TODO add your handling code here:
+        onAddButtonPressed();
+    }//GEN-LAST:event_quickAppButtonActionPerformed
+
+    private void quickNoteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickNoteButtonActionPerformed
+        // TODO add your handling code here:
+        onAddButtonPressed();
+    }//GEN-LAST:event_quickNoteButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1101,12 +1209,12 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem contentMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private org.jdesktop.swingx.plaf.DatePickerAddon datePickerAddon1;
+    private javax.swing.JButton deleteAllButton;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenuItem editMenuItem;
     private javax.swing.JButton exportButton;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenuItem importMenuItem;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1135,6 +1243,10 @@ public class HomeFrame extends javax.swing.JFrame {
     public javax.swing.JTable messageTable;
     private javax.swing.JMenuItem noteMenuItem;
     public javax.swing.JTable noteTable;
+    private javax.swing.JButton quickAddMessage;
+    private javax.swing.JButton quickAddVisitor;
+    private javax.swing.JButton quickAppButton;
+    private javax.swing.JButton quickNoteButton;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JMenuItem rightCopyMenuItem;
     private javax.swing.JMenuItem rightSendAsEmail;
